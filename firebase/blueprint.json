@@ -1,0 +1,170 @@
+{
+  "entities": {
+    "CacheEntry": {
+      "title": "CacheEntry",
+      "description": "General AI response cache entry.",
+      "type": "object",
+      "properties": {
+        "cache_key": { "type": "string" },
+        "country": { "type": "string" },
+        "persona": { "type": "string" },
+        "step": { "type": "string" },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "model_version": { "type": "string" }
+      }
+    },
+    "QuizEntry": {
+      "title": "QuizEntry",
+      "description": "AI generated quiz content cache.",
+      "type": "object",
+      "properties": {
+        "cache_key": { "type": "string" },
+        "country": { "type": "string" },
+        "topic": { "type": "string" },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string" }
+      }
+    },
+    "MythEntry": {
+      "title": "MythEntry",
+      "description": "AI generated myth buster content cache.",
+      "type": "object",
+      "properties": {
+        "cache_key": { "type": "string" },
+        "country": { "type": "string" },
+        "myth": { "type": "string" },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string" }
+      }
+    },
+    "UserJourney": {
+      "title": "UserJourney",
+      "description": "A specific learning sandbox journey for a user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "country": { "type": "string" },
+        "residence": { "type": "string" },
+        "region": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "persona": { "type": "string" },
+        "language": { "type": "string" },
+        "goal": { "type": "string" },
+        "isFirstTimeVoter": { "type": "boolean" },
+        "registrationStatus": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "SavedContent": {
+      "title": "SavedContent",
+      "description": "Bookmarked AI content (quiz, myth, tip) specifically saved by the user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "content": { "type": "string" },
+        "savedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile containing settings, persona, and progression within the app.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "The user's registered email address."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's display name."
+        },
+        "bio": {
+          "type": "string",
+          "description": "User's short biography."
+        },
+        "handle": {
+          "type": "string",
+          "description": "User's social handle."
+        },
+        "followersCount": {
+          "type": "number",
+          "description": "Mock follower count."
+        },
+        "followingCount": {
+          "type": "number",
+          "description": "Mock following count."
+        },
+        "profile": {
+          "type": "object",
+          "description": "User preferences and selection from onboarding.",
+          "properties": {
+            "country": { "type": "string" },
+            "persona": { "type": "string" },
+            "language": { "type": "string" },
+            "goal": { "type": "string" },
+            "countryName": { "type": "string" }
+          }
+        },
+        "stamps": {
+          "type": "array",
+          "items": { "type": "number" },
+          "description": "Array of earned stamp IDs representing completed steps."
+        },
+        "chatHistory": {
+          "type": "array",
+          "description": "History of the user's conversation with CivicBot.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "role": { "type": "string" },
+              "text": { "type": "string" },
+              "source": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "ai_responses/{cacheKey}": {
+      "schema": {
+        "$ref": "#/entities/CacheEntry"
+      },
+      "description": "Publicly readable cache of AI responses."
+    },
+    "quiz_content/{cacheKey}": {
+      "schema": {
+        "$ref": "#/entities/QuizEntry"
+      },
+      "description": "Publicly readable cache of AI generated quizzes."
+    },
+    "myth_content/{cacheKey}": {
+      "schema": {
+        "$ref": "#/entities/MythEntry"
+      },
+      "description": "Publicly readable cache of AI generated myth busters."
+    },
+    "users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores user profile and progression data."
+    },
+    "users/{userId}/journeys/{journeyId}": {
+      "schema": {
+        "$ref": "#/entities/UserJourney"
+      },
+      "description": "User sandbox learning journeys."
+    },
+    "users/{userId}/saved_content/{contentId}": {
+      "schema": {
+        "$ref": "#/entities/SavedContent"
+      },
+      "description": "User specific bookmarked content."
+    }
+  }
+}

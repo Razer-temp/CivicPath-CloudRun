@@ -1,0 +1,209 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 0. Global Safety Net
+    match /{document=**} { 
+      allow read, write: if false; 
+    }
+
+    // Phase 3: Primitive Definition
+    function isValidId(id) { 
+        return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+
+    // Validation Blueprint for User
+    function isValidUser(data) {
+        // Strict Keys & Partial Updates for Creation
+        return data.keys().size() <= 12
+            // Type & Size Checks
+            && (!('email' in data) || (data.email is string && data.email.size() <= 200))
+            && (!('name' in data) || (data.name is string && data.name.size() <= 100))
+            && (!('uid' in data) || (data.uid is string && data.uid.size() <= 128))
+            && (!('hasCompletedOnboarding' in data) || data.hasCompletedOnboarding is bool)
+            && (!('bio' in data) || (data.bio is string && data.bio.size() <= 300))
+            && (!('handle' in data) || (data.handle is string && data.handle.size() <= 50))
+            && (!('followersCount' in data) || data.followersCount is number)
+            && (!('followingCount' in data) || data.followingCount is number)
+            && (!('profile' in data) || (data.profile is map && data.profile.keys().size() <= 12))
+            && (!('stamps' in data) || (data.stamps is list && data.stamps.size() <= 50))
+            && (!('chatHistory' in data) || (data.chatHistory is list && data.chatHistory.size() <= 100));
+    }
+
+    function isValidCacheEntry(data) {
+        return data.keys().size() <= 7
+            && (!('cache_key' in data) || (data.cache_key is string && data.cache_key.size() <= 200))
+            && (!('country' in data) || (data.country is string && data.country.size() <= 50))
+            && (!('persona' in data) || (data.persona is string && data.persona.size() <= 50))
+            && (!('step' in data) || (data.step is string && data.step.size() <= 100))
+            && (!('content' in data) || (data.content is string && data.content.size() <= 50000))
+            && (!('timestamp' in data) || (data.timestamp is string && data.timestamp.size() <= 50))
+            && (!('model_version' in data) || (data.model_version is string && data.model_version.size() <= 50));
+    }
+
+    function isValidQuizEntry(data) {
+        return data.keys().size() <= 5
+            && (!('cache_key' in data) || (data.cache_key is string && data.cache_key.size() <= 200))
+            && (!('country' in data) || (data.country is string && data.country.size() <= 50))
+            && (!('topic' in data) || (data.topic is string && data.topic.size() <= 100))
+            && (!('content' in data) || (data.content is string && data.content.size() <= 10000))
+            && (!('timestamp' in data) || (data.timestamp is string && data.timestamp.size() <= 50));
+    }
+
+    function isValidMythEntry(data) {
+        return data.keys().size() <= 5
+            && (!('cache_key' in data) || (data.cache_key is string && data.cache_key.size() <= 200))
+            && (!('country' in data) || (data.country is string && data.country.size() <= 50))
+            && (!('myth' in data) || (data.myth is string && data.myth.size() <= 500))
+            && (!('content' in data) || (data.content is string && data.content.size() <= 10000))
+            && (!('timestamp' in data) || (data.timestamp is string && data.timestamp.size() <= 50));
+    }
+
+    function isValidUserJourney(data) {
+        return data.keys().size() <= 12
+            && (!('id' in data) || (data.id is string && data.id.size() <= 128))
+            && (!('country' in data) || (data.country is string && data.country.size() <= 50))
+            && (!('residence' in data) || (data.residence is string && data.residence.size() <= 100))
+            && (!('region' in data) || (data.region is string && data.region.size() <= 100))
+            && (!('postalCode' in data) || (data.postalCode is string && data.postalCode.size() <= 50))
+            && (!('persona' in data) || (data.persona is string && data.persona.size() <= 50))
+            && (!('language' in data) || (data.language is string && data.language.size() <= 50))
+            && (!('goal' in data) || (data.goal is string && data.goal.size() <= 50))
+            && (!('isFirstTimeVoter' in data) || data.isFirstTimeVoter is bool)
+            && (!('registrationStatus' in data) || (data.registrationStatus is string && data.registrationStatus.size() <= 50))
+            && (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 50))
+            && (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 50));
+    }
+
+    function isValidSavedContent(data) {
+        return data.keys().size() <= 4
+            && (!('id' in data) || (data.id is string && data.id.size() <= 128))
+            && (!('type' in data) || (data.type is string && data.type.size() <= 50))
+            && (!('content' in data) || (data.content is string && data.content.size() <= 10000))
+            && (!('savedAt' in data) || (data.savedAt is string && data.savedAt.size() <= 50));
+    }
+
+    match /users/{userId} {
+      // ... (previous content remains unchanged)
+      // The "Master Gate" & Path Variable Hardening
+      allow get: if isSignedIn() && request.auth.uid == userId && isValidId(userId);
+      
+      // No blanket reads or client delegation
+      allow list: if false;
+
+      // The Blueprint (validation helper) on create
+      allow create: if isSignedIn() 
+                    && request.auth.uid == userId 
+                    && isValidId(userId)
+                    && isValidUser(incoming())
+                    // Require strict keys on create (no ghost fields)
+                    && incoming().keys().hasAll(['email', 'name', 'uid', 'hasCompletedOnboarding', 'profile'])
+                    && incoming().keys().size() >= 5;
+
+      // The "Action-Based" Update Pattern
+      allow update: if isSignedIn() 
+                    && request.auth.uid == userId 
+                    && isValidId(userId)
+                    && isValidUser(incoming())
+                    // Explicitly restrict to these specific fields during update
+                    && incoming().diff(existing()).affectedKeys().hasOnly(['email', 'name', 'uid', 'hasCompletedOnboarding', 'bio', 'handle', 'followersCount', 'followingCount', 'profile', 'stamps', 'chatHistory']);
+                    
+      allow delete: if false;
+
+      match /journeys/{journeyId} {
+        allow list: if isSignedIn() && request.auth.uid == userId;
+        allow get: if isSignedIn() && request.auth.uid == userId && isValidId(journeyId);
+        
+        allow create: if isSignedIn()
+                      && request.auth.uid == userId
+                      && isValidId(journeyId)
+                      && isValidUserJourney(incoming())
+                      && incoming().keys().hasAll(['id']);
+
+        allow update: if isSignedIn()
+                      && request.auth.uid == userId
+                      && isValidId(journeyId)
+                      && isValidUserJourney(incoming())
+                      && incoming().diff(existing()).affectedKeys().hasOnly(['country', 'residence', 'region', 'postalCode', 'persona', 'language', 'goal', 'isFirstTimeVoter', 'registrationStatus', 'updatedAt']);
+
+        allow delete: if isSignedIn() && request.auth.uid == userId;
+      }
+
+      match /saved_content/{contentId} {
+        allow list: if isSignedIn() && request.auth.uid == userId;
+        allow get: if isSignedIn() && request.auth.uid == userId && isValidId(contentId);
+        
+        allow create: if isSignedIn()
+                      && request.auth.uid == userId
+                      && isValidId(contentId)
+                      && isValidSavedContent(incoming())
+                      && incoming().keys().hasAll(['id']);
+
+        allow update: if isSignedIn()
+                      && request.auth.uid == userId
+                      && isValidId(contentId)
+                      && isValidSavedContent(incoming())
+                      && incoming().diff(existing()).affectedKeys().hasOnly(['type', 'content']);
+
+        allow delete: if isSignedIn() && request.auth.uid == userId;
+      }
+    }
+
+    match /ai_responses/{cacheKey} {
+      allow list: if false;
+      // Cache reads are intentionally public so all users benefit from the shared AI response pool.
+      // Cache keys are sanitized on write by the client's sanitizeDocId() function.
+      allow get: if true;
+      
+      allow create: if isSignedIn()
+                    && isValidCacheEntry(incoming())
+                    && incoming().keys().hasAll(['cache_key', 'content', 'timestamp'])
+                    && incoming().keys().size() >= 3;
+
+      allow update: if isSignedIn()
+                    && isValidCacheEntry(incoming())
+                    && incoming().diff(existing()).affectedKeys().hasOnly(['content', 'timestamp', 'country', 'persona', 'step', 'model_version']);
+      
+      allow delete: if false;
+    }
+
+    match /quiz_content/{cacheKey} {
+      allow list: if false;
+      // Public read for shared quiz cache — same rationale as ai_responses
+      allow get: if true;
+      
+      allow create: if isSignedIn()
+                    && isValidQuizEntry(incoming())
+                    && incoming().keys().hasAll(['cache_key', 'content', 'timestamp'])
+                    && incoming().keys().size() >= 3;
+
+      allow update: if isSignedIn()
+                    && isValidQuizEntry(incoming())
+                    && incoming().diff(existing()).affectedKeys().hasOnly(['content', 'timestamp', 'country', 'topic']);
+      
+      allow delete: if false;
+    }
+
+    match /myth_content/{cacheKey} {
+      allow list: if false;
+      // Public read for shared myth-buster cache — same rationale as ai_responses
+      allow get: if true;
+      
+      allow create: if isSignedIn()
+                    && isValidMythEntry(incoming())
+                    && incoming().keys().hasAll(['cache_key', 'content', 'timestamp'])
+                    && incoming().keys().size() >= 3;
+
+      allow update: if isSignedIn()
+                    && isValidMythEntry(incoming())
+                    && incoming().diff(existing()).affectedKeys().hasOnly(['content', 'timestamp', 'country', 'myth']);
+      
+      allow delete: if false;
+    }
+  }
+}

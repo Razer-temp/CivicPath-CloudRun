@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.gitignore
+.env
+.env.local
+.vscode
+README.md
+tests
+playwright-report
+test-results
+coverage

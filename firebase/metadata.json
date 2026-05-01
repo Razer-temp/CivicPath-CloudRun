@@ -1,0 +1,6 @@
+{
+  "name": "CivicPath",
+  "description": "",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": []
+}
