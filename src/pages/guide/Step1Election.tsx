@@ -25,7 +25,7 @@ export const Step1Election = ({ profile, onPass }: { profile: JourneyProfile, on
       const prompt = `Write a 3-paragraph plain language explanation of what an election is and why democracy matters. 
       Tailor it specifically for a ${profile.persona} in ${profile.countryName}. 
       Use simple, encouraging language. Write in markdown. Output ONLY the markdown text.`;
-      
+
       const response = await generateGuideContent(prompt, {
         country: profile.country,
         persona: profile.persona,
@@ -82,9 +82,9 @@ export const Step1Election = ({ profile, onPass }: { profile: JourneyProfile, on
       {wikiData && (
         <div className="bg-white border text-center sm:text-left border-slate-200 rounded-2xl overflow-hidden mb-8 shadow-sm flex flex-col sm:flex-row">
           {wikiData.thumbnail ? (
-            <img 
-              src={wikiData.thumbnail.source} 
-              alt={wikiData.title} 
+            <img
+              src={wikiData.thumbnail.source}
+              alt={wikiData.title}
               className="w-full sm:w-48 h-48 sm:h-auto object-cover shrink-0 filter contrast-125"
             />
           ) : (
@@ -121,7 +121,7 @@ export const Step1Election = ({ profile, onPass }: { profile: JourneyProfile, on
             Edge Cache: Instant load from your device.
           </div>
         )}
-        
+
         {intro ? (
           <ReactMarkdown>{intro}</ReactMarkdown>
         ) : (

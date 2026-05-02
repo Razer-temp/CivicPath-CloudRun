@@ -30,15 +30,15 @@ export const InstallPrompt = () => {
               <p className="text-xs text-slate-400">Add to home screen for offline access</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={() => setShow(false)}
               className="bg-civic-blue hover:bg-blue-600 text-white text-sm font-medium px-4 py-1.5 rounded-lg transition-colors"
             >
               Install
             </button>
-            <button 
+            <button
               onClick={() => setShow(false)}
               className="text-slate-400 hover:text-white p-1 transition-colors"
             >

@@ -1,9 +1,9 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  BookOpen, CheckCircle, ChevronRight, FileText, 
-  MapPin, Users, Flag, BrainCircuit, Play, Pause
+import {
+  BookOpen, CheckCircle, ChevronRight, FileText,
+  MapPin, Users, Flag, Play, Pause
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { Logo } from "../components/ui/Logo";
@@ -29,7 +29,7 @@ const STEPS = [
 
 export const Guide = () => {
   const navigate = useNavigate();
-  const { user, profile: authProfile, saveProfile } = useAuth();
+  const { profile: authProfile, saveProfile } = useAuth();
   const { t } = useLanguage();
   const [activeStep, setActiveStep] = useState(1);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -57,7 +57,7 @@ export const Guide = () => {
 
   useEffect(() => {
     const saved = localStorage.getItem("civicpath_journey");
-    
+
     // Create a mapping so prompt interpolation works correctly
     const COUNTRY_MAP: Record<string, string> = {
       in: "India", us: "United States", gb: "United Kingdom",
@@ -90,12 +90,12 @@ export const Guide = () => {
       if (contentElement && profile) {
         const textToSpeak = contentElement.innerText || "";
         const utterance = new SpeechSynthesisUtterance(textToSpeak);
-        
+
         // Try to set language based on profile
         if (profile.profile?.language) {
           utterance.lang = profile.profile.language === 'en' ? 'en-US' : `${profile.profile.language}-IN`;
         }
-        
+
         utterance.onend = () => setIsSpeaking(false);
         window.speechSynthesis.speak(utterance);
         setIsSpeaking(true);
@@ -121,10 +121,10 @@ export const Guide = () => {
             <Logo className="w-8 h-8" />
             <span className="font-bold text-civic-blue text-lg hidden sm:block">CivicPath</span>
           </div>
-          
+
           <div className="flex-1 max-w-md mx-4 sm:mx-8">
             <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-civic-blue transition-all duration-500 ease-out"
                 style={{ width: `${(activeStep / 5) * 100}%` }}
               />
@@ -162,8 +162,8 @@ export const Guide = () => {
                 onClick={() => setActiveStep(step.id)}
                 className={cn(
                   "flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors border focus:outline-none focus-visible:ring-2 focus-visible:ring-civic-blue",
-                  isActive 
-                    ? "bg-civic-blue text-white border-civic-blue" 
+                  isActive
+                    ? "bg-civic-blue text-white border-civic-blue"
                     : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
                 )}
               >
@@ -177,7 +177,7 @@ export const Guide = () => {
 
       <div className="flex-1 container mx-auto flex">
         <div className="hidden md:block w-80 shrink-0 bg-slate-900 text-slate-100 p-6 sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-800 flex flex-col">
-          
+
           {/* Passport Header */}
           <div className="mb-8 p-5 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-800/50 border border-slate-700/50 shadow-inner relative overflow-hidden">
             <div className="absolute top-0 right-0 p-3 opacity-10">
@@ -196,18 +196,18 @@ export const Guide = () => {
                 <p className="text-sm text-slate-400">{t("Class of 2026")}</p>
               </div>
             </div>
-            
+
             {/* Stamps Grid */}
             <div className="grid grid-cols-5 gap-2 mt-6">
               {[1, 2, 3, 4, 5].map(stepId => {
                 const hasStamp = stamps.includes(stepId);
                 return (
-                  <div 
-                    key={stepId} 
+                  <div
+                    key={stepId}
                     className={cn(
                       "aspect-square rounded-full flex items-center justify-center transition-all duration-500 relative",
-                      hasStamp 
-                        ? "bg-amber-500/10 border-2 border-amber-500/50 scale-100 shadow-[0_0_15px_rgba(245,158,11,0.2)]" 
+                      hasStamp
+                        ? "bg-amber-500/10 border-2 border-amber-500/50 scale-100 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
                         : "border-2 border-dashed border-slate-700 scale-95 opacity-50"
                     )}
                     title={hasStamp ? t("Earned Step Stamp") : t("Complete Step Quiz")}
@@ -238,7 +238,7 @@ export const Guide = () => {
               </div>
             )}
           </div>
-          
+
           <nav className="flex flex-col gap-2 relative flex-1" role="tablist">
             {STEPS.map((step) => {
               const isActive = activeStep === step.id;
@@ -260,7 +260,7 @@ export const Guide = () => {
                 >
                   <div className={cn(
                     "w-8 h-8 shrink-0 rounded-full flex items-center justify-center transition-colors relative z-10",
-                    isActive ? "bg-civic-blue text-white shadow-sm" : 
+                    isActive ? "bg-civic-blue text-white shadow-sm" :
                     hasStamp ? "bg-amber-500/20 text-amber-500" : "bg-slate-800 text-slate-500 group-hover:bg-slate-700"
                   )}>
                     {hasStamp ? <CheckCircle className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
@@ -318,7 +318,7 @@ export const Guide = () => {
               >
                 {t("Previous")}
               </button>
-              
+
               {activeStep < 5 ? (
                 <button
                   onClick={() => setActiveStep(prev => Math.min(5, prev + 1))}

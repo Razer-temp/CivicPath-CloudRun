@@ -1,8 +1,8 @@
 import { logger } from "../utils/logger";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navigation, MapPin, Search, ThermometerSun, AlertTriangle, ExternalLink, Sun, CloudRain, Cloud, X, Info } from "lucide-react";
-import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow, useMap } from '@vis.gl/react-google-maps';
+import { Map, AdvancedMarker, Pin, InfoWindow } from '@vis.gl/react-google-maps';
 import { fetchHistoricalWeather } from "../services/weatherService";
 import { useLanguage } from "../lib/LanguageContext";
 

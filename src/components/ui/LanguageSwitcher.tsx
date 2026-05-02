@@ -7,7 +7,7 @@ export const LanguageSwitcher = () => {
   return (
     <div className="flex items-center gap-2 group relative">
       <Globe className="w-5 h-5 text-slate-500 group-hover:text-civic-blue transition-colors" />
-      <select 
+      <select
         value={language}
         onChange={(e) => setLanguage(e.target.value)}
         className="appearance-none bg-transparent font-medium text-sm text-slate-700 outline-none cursor-pointer pr-4 hover:text-civic-blue transition-colors"

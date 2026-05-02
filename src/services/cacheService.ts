@@ -39,7 +39,7 @@ export const localCache = {
       return undefined;
     }
   },
-  
+
   async save(entry: AICacheEntry): Promise<void> {
     try {
       await set(entry.cacheKey, entry);

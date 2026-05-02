@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { BrainCircuit, Trophy, ArrowRight, CheckCircle, AlertCircle, Bookmark, BookmarkCheck } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { generateText } from "../../services/geminiService";
-import { crowdCache, FirebaseQuizEntry } from "../../services/firestoreCache";
+import { crowdCache } from "../../services/firestoreCache";
 import { cn } from "../../lib/utils";
 import { useAuth } from "../../lib/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
@@ -32,11 +32,11 @@ export const GeminiQuiz = ({ topic, country, onPass }: GeminiQuizProps) => {
   const [hasStarted, setHasStarted] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { user } = useAuth();
-  
+
   const handleSave = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!user || questions.length === 0) return;
-    
+
     setIsSaved(true);
     const contentId = `quiz_${Date.now()}`;
     const payload = {
@@ -45,7 +45,7 @@ export const GeminiQuiz = ({ topic, country, onPass }: GeminiQuizProps) => {
       content: JSON.stringify({ topic, country, questions }),
       savedAt: new Date().toISOString()
     };
-    
+
     try {
       await setDoc(doc(db, "users", user.uid, "saved_content", contentId), payload);
     } catch (err) {
@@ -65,7 +65,7 @@ export const GeminiQuiz = ({ topic, country, onPass }: GeminiQuizProps) => {
     if (!hasStarted) {
       setLoading(true);
       const cacheKey = `quiz_${country}_${topic.replace(/[^a-zA-Z0-9]/g, '_')}`;
-      
+
       const cached = await crowdCache.getQuiz(cacheKey);
       if (cached && cached.content) {
         try {
@@ -74,20 +74,20 @@ export const GeminiQuiz = ({ topic, country, onPass }: GeminiQuizProps) => {
           setHasStarted(true);
           setLoading(false);
           return;
-        } catch (_parseErr) { /* JSON parse fallback — cached content may be malformed */ }
+        } catch { /* JSON parse fallback — cached content may be malformed */ }
       }
 
       const prompt = `Generate exactly 3 multiple-choice questions about '${topic}' for elections in ${country}. 
       Format strictly as a JSON array of objects. Keys: "q" (string, the question), "options" (array of exactly 4 strings), "answer" (number 0-3, the index of the correct option). Don't use markdown blocks.`;
-      
+
       const response = await generateText(prompt);
       try {
-        let cleanJson = response.replace(/```json/g, '').replace(/```/g, '').trim();
+        const cleanJson = response.replace(/```json/g, '').replace(/```/g, '').trim();
         const parsed = JSON.parse(cleanJson);
         const newData = parsed.slice(0, 3);
         setQuestions(newData);
         setHasStarted(true);
-        
+
         crowdCache.saveQuiz({
           cache_key: cacheKey,
           country,
@@ -95,7 +95,7 @@ export const GeminiQuiz = ({ topic, country, onPass }: GeminiQuizProps) => {
           content: JSON.stringify(newData),
           timestamp: new Date().toISOString()
         });
-      } catch (err) {
+      } catch {
         // Fallback silently
         setQuestions([
           { q: "What is the minimum voting age?", options: ["16", "18", "21", "25"], answer: 1 },
@@ -111,7 +111,7 @@ export const GeminiQuiz = ({ topic, country, onPass }: GeminiQuizProps) => {
   const handleSelect = (idx: number) => {
     if (selected !== null) return;
     setSelected(idx);
-    
+
     if (idx === questions[currentQ].answer) {
       setScore(s => s + 1);
     }
@@ -128,7 +128,7 @@ export const GeminiQuiz = ({ topic, country, onPass }: GeminiQuizProps) => {
 
   if (!isOpen) {
     return (
-      <button 
+      <button
         onClick={startQuiz}
         className="w-full mt-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl p-6 relative overflow-hidden group text-left shadow-md hover:shadow-lg transition-all"
       >
@@ -161,7 +161,7 @@ export const GeminiQuiz = ({ topic, country, onPass }: GeminiQuizProps) => {
             <div className="text-sm font-medium text-slate-400">Score: {score}</div>
           )}
           {hasStarted && user && (
-            <button 
+            <button
               onClick={handleSave}
               disabled={isSaved}
               className={cn(
@@ -191,7 +191,7 @@ export const GeminiQuiz = ({ topic, country, onPass }: GeminiQuizProps) => {
             <p className="text-slate-500 mb-6">
               {score === 3 ? "Perfect! You earned the Step Badge." : "Great effort! Review the guide to master this topic."}
             </p>
-            <button 
+            <button
               onClick={() => setIsOpen(false)}
               className="px-6 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors"
             >

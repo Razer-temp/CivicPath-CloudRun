@@ -11,7 +11,7 @@ import { JourneyProfile } from "../../types";
 export const Step2Registration = ({ profile, onPass }: { profile: JourneyProfile, onPass?: () => void }) => {
   const [content, setContent] = useState("");
   const [source, setSource] = useState<ContentSource | null>(null);
-  
+
   // Simulated CMS Data (In production, this would come from Google Sheets API)
   const deadlines: Record<string, { date: Date, display: string, link: string }> = {
     in: { date: new Date(2026, 3, 10), display: "April 10, 2026", link: "https://voters.eci.gov.in/" },
@@ -28,7 +28,7 @@ export const Step2Registration = ({ profile, onPass }: { profile: JourneyProfile
     const fetchContent = async () => {
       const prompt = `Explain the voter registration process step-by-step for a ${profile.persona} in ${profile.countryName}. 
       Mention the general eligibility age. Make it 3 clear steps. Output in markdown. Do not include markdown \`\`\` blocks, just the text.`;
-      
+
       const response = await generateGuideContent(prompt, {
         country: profile.country,
         persona: profile.persona,
@@ -59,10 +59,10 @@ export const Step2Registration = ({ profile, onPass }: { profile: JourneyProfile
           <div className="text-xl font-bold text-blue-900">{cData.display}</div>
           <div className="text-sm text-blue-700 mt-1">General cutoff for new registrations</div>
         </div>
-        <AddToCalendar 
-          title="Voter Registration Deadline" 
-          description={`Last day to register to vote for the upcoming ${profile.countryName} elections.`} 
-          date={cData.date} 
+        <AddToCalendar
+          title="Voter Registration Deadline"
+          description={`Last day to register to vote for the upcoming ${profile.countryName} elections.`}
+          date={cData.date}
         />
       </div>
 
@@ -72,7 +72,7 @@ export const Step2Registration = ({ profile, onPass }: { profile: JourneyProfile
           <FileText className="w-5 h-5 text-civic-blue" />
           <h2 className="!my-0 !text-lg">How to Register in {profile.countryName}</h2>
         </div>
-        
+
         {source === 'cms_fallback' && (
           <div className="mb-4 bg-amber-100 text-amber-800 text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-2">
             <AlertTriangle className="w-4 h-4" />
@@ -91,7 +91,7 @@ export const Step2Registration = ({ profile, onPass }: { profile: JourneyProfile
             Edge Cache: Instant load from your device.
           </div>
         )}
-        
+
         {content ? (
           <ReactMarkdown>{content}</ReactMarkdown>
         ) : (
@@ -112,7 +112,7 @@ export const Step2Registration = ({ profile, onPass }: { profile: JourneyProfile
            <h3 className="font-bold text-slate-800 mb-1">Ready to register?</h3>
            <p className="text-sm text-slate-500 mb-4 sm:mb-0">Visit the official portal to complete your registration online.</p>
          </div>
-         <a 
+         <a
            href={cData.link}
            target="_blank"
            rel="noopener noreferrer"

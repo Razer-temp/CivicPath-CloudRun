@@ -1,7 +1,7 @@
 import { logger } from "../utils/logger";
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Mic, Send, MessageSquare, Bot, AlertCircle, Loader2, Sparkles, Languages, CheckCircle2, RefreshCw } from "lucide-react";
+import { motion, } from "framer-motion";
+import { Mic, Send, Bot, AlertCircle, Loader2, Sparkles, Languages, CheckCircle2, RefreshCw } from "lucide-react";
 import Markdown from "react-markdown";
 import DOMPurify from "dompurify";
 import { generateChat } from "../services/geminiService";
@@ -31,7 +31,7 @@ export const AssistantPage = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  
+
   const { profile: authProfile, saveProfile } = useAuth();
 
   // Persistence
@@ -43,7 +43,7 @@ export const AssistantPage = () => {
       if (saved) {
         try {
           setMessages(JSON.parse(saved));
-        } catch (_parseErr) {
+        } catch {
           /* Intentionally suppressed: localStorage may contain corrupt JSON from older versions */
         }
       } else {
@@ -71,7 +71,7 @@ export const AssistantPage = () => {
 
   const handleSend = async (text: string = input) => {
     if (!text.trim() || isTyping) return;
-    
+
     let newMessages = [...messages];
     const userMsg: AssistantChatMessage = { id: Date.now().toString(), role: "user", text: text.trim() };
     newMessages.push(userMsg);
@@ -86,7 +86,7 @@ export const AssistantPage = () => {
       const langNames: Record<string, string> = { "en": "English", "hi": "Hindi", "ta": "Tamil", "es": "Spanish" };
       const currentLangName = langNames[language] || "English";
       const completedSteps = authProfile?.stamps?.length || 0;
-      
+
       const systemInstruction = `You are CivicBot, an official, strictly non-partisan AI assistant for first-time voters in India (2026).
 Your goal is to educate voters on civic duties, election processes (EVM, VVPAT, Lok Sabha, Model Code of Conduct), and voter rights.
 CRITICAL RULES:
@@ -99,19 +99,19 @@ CRITICAL RULES:
 
       // Pass only last 10 messages for context
       const history = newMessages.slice(-10).map(m => ({ role: m.role, text: m.text }));
-      
+
       const rawResponse = await generateChat(history, systemInstruction);
-      
+
       // Sanitize response to prevent XSS
       const cleanResponse = DOMPurify.sanitize(rawResponse);
-      
-      const aiMsg: AssistantChatMessage = { 
-        id: (Date.now() + 1).toString(), 
-        role: "ai", 
+
+      const aiMsg: AssistantChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "ai",
         text: cleanResponse,
         source: "Election Commission Guidelines (Simulated AI)"
       };
-      
+
       newMessages = [...newMessages, aiMsg];
       setMessages(newMessages);
 
@@ -121,7 +121,7 @@ CRITICAL RULES:
       // Automatically speak the response if the user just used voice input previously
       // (This is a simplified version; normally we'd trigger TTS here if voice mode is active)
 
-    } catch(err) {
+    } catch {
       newMessages = [...newMessages, { id: Date.now().toString(), role: "ai", text: "I encountered a network issue. Please try asking again." }];
       setMessages(newMessages);
     } finally {
@@ -135,7 +135,7 @@ CRITICAL RULES:
       alert("Voice input is not supported in your browser.");
       return;
     }
-    
+
     if (isListening) {
       setIsListening(false);
       return;
@@ -151,7 +151,7 @@ CRITICAL RULES:
     const SpeechRec = windowWithSpeech.SpeechRecognition || windowWithSpeech.webkitSpeechRecognition;
     if (!SpeechRec) return;
     const recognition = new SpeechRec();
-    
+
     recognition.continuous = false;
     recognition.interimResults = false;
     // Map language to BCP 47 tags for recognition accuracy
@@ -159,7 +159,7 @@ CRITICAL RULES:
     recognition.lang = langMap[language] || "en-IN";
 
     recognition.onstart = () => setIsListening(true);
-    
+
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       const transcript = event.results[0][0].transcript;
       setInput(transcript);
@@ -189,7 +189,7 @@ CRITICAL RULES:
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] bg-slate-50 relative">
-      
+
       {/* Header Panel */}
       <div className="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between shrink-0 shadow-sm z-10 relative">
         <div className="flex items-center gap-3">
@@ -213,10 +213,10 @@ CRITICAL RULES:
             <RefreshCw className="w-4 h-4" />
             <span className="sr-only">{t("Clear Chat")}</span>
           </button>
-          
+
           <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-lg border border-slate-200 focus-within:ring-2 focus-within:ring-civic-blue">
             <Languages className="w-4 h-4 text-slate-500 ml-1" aria-hidden="true" />
-            <select 
+            <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
               className="bg-transparent text-sm font-bold text-slate-700 outline-none pr-2 cursor-pointer"
@@ -235,14 +235,14 @@ CRITICAL RULES:
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6" aria-live="polite" aria-atomic="false">
         <div className="max-w-3xl mx-auto space-y-6">
           {messages.map((msg) => (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              key={msg.id} 
+              key={msg.id}
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div className={`flex gap-3 max-w-[85%] md:max-w-[75%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
-                
+
                 {/* Avatar */}
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1 ${
                   msg.role === "user" ? "bg-slate-800 text-white" : "bg-civic-blue text-white shadow-md"
@@ -253,8 +253,8 @@ CRITICAL RULES:
                 {/* Bubble */}
                 <div className="flex flex-col gap-1.5">
                   <div className={`p-4 rounded-[1.5rem] text-sm md:text-base leading-relaxed ${
-                    msg.role === "user" 
-                      ? "bg-slate-800 text-white rounded-tr-sm" 
+                    msg.role === "user"
+                      ? "bg-slate-800 text-white rounded-tr-sm"
                       : "bg-white text-slate-700 border border-slate-200 rounded-tl-sm shadow-sm markdown-body"
                   }`}>
                     {msg.role === "user" ? (
@@ -276,7 +276,7 @@ CRITICAL RULES:
               </div>
             </motion.div>
           ))}
-          
+
           {isTyping && (
             <div className="flex justify-start">
               <div className="flex gap-3 max-w-[85%]">
@@ -318,13 +318,13 @@ CRITICAL RULES:
       {/* Input Area */}
       <div className="bg-white border-t border-slate-200 p-4 shrink-0 shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)] relative z-10">
         <div className="max-w-3xl mx-auto flex flex-col gap-2">
-          
-          <form 
+
+          <form
             onSubmit={(e) => { e.preventDefault(); handleSend(); }}
             className="flex items-end gap-2 relative"
           >
             <div className="relative flex-1">
-              <textarea 
+              <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
@@ -339,12 +339,12 @@ CRITICAL RULES:
                 className="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-5 pr-14 py-4 text-base focus:outline-none focus:border-civic-blue focus:ring-2 focus:ring-civic-blue transition-colors resize-none overflow-hidden block"
                 style={{ minHeight: "56px" }}
               />
-              <button 
+              <button
                 type="button"
                 onClick={toggleListening}
                 className={`absolute right-3 bottom-2.5 p-2 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-civic-blue ${
-                  isListening 
-                    ? "bg-red-50 text-red-500 animate-pulse" 
+                  isListening
+                    ? "bg-red-50 text-red-500 animate-pulse"
                     : "text-slate-400 hover:text-slate-700 hover:bg-slate-100"
                 }`}
               >
@@ -353,7 +353,7 @@ CRITICAL RULES:
               </button>
             </div>
 
-            <button 
+            <button
               type="submit"
               disabled={!input.trim() || isTyping}
               className="p-4 bg-civic-blue text-white rounded-2xl hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-civic-blue disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md shrink-0 h-[56px] w-[56px] flex items-center justify-center"

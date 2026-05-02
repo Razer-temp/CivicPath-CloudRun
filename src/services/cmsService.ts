@@ -33,7 +33,7 @@ export const cmsService = {
     try {
       // Simulate network delay for CMS fetch
       await new Promise(resolve => setTimeout(resolve, 300));
-      
+
       const fallbacks = countryFallbackMap[countryCode];
       if (fallbacks) {
         const stepData = fallbacks[step];
@@ -41,7 +41,7 @@ export const cmsService = {
           return stepData[Math.floor(Math.random() * stepData.length)].content;
         }
       }
-      
+
       // Generic Global Fallbacks (If country is not explicitly mapped yet)
       return generateGenericFallback(step, countryCode);
     } catch (e) {

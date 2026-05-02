@@ -5,9 +5,9 @@ import { motion } from "motion/react";
 export const HeroSection = ({ t }: { t: (key: string) => string }) => {
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1, 
-      transition: { staggerChildren: 0.1 } 
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
     }
   };
 
@@ -23,16 +23,16 @@ export const HeroSection = ({ t }: { t: (key: string) => string }) => {
           <Sparkles className="w-4 h-4 text-saffron" />
           <span>{t("Now supporting 15+ countries globally")}</span>
         </motion.div>
-        
+
         <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 text-balance leading-tight">
           {t("Your guided journey to")} <br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-civic-blue to-blue-500">{t("understanding democracy.")}</span>
         </motion.h1>
-        
+
         <motion.p variants={itemVariants} className="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto text-balance">
           {t("Democracy isn't just about voting; it's about knowing how your voice counts. CivicPath simplifies the election process step by step, in your own language.")}
         </motion.p>
-        
+
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             to="/journey-setup"

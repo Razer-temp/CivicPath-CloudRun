@@ -4,7 +4,7 @@ import { Search, MapPin, ExternalLink, Calendar, Users, AlertTriangle } from "lu
 
 // Mock data matching the 2026 plan (Tamil Nadu, West Bengal, Kerala, Assam, Puducherry)
 const STATES = [
-  "Assam", "Kerala", "Puducherry", "Tamil Nadu", "West Bengal", 
+  "Assam", "Kerala", "Puducherry", "Tamil Nadu", "West Bengal",
   "Maharashtra", "Uttar Pradesh", "Delhi", "Karnataka"
 ];
 
@@ -69,7 +69,7 @@ export const IndiaDashboard = () => {
         <label className="block text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">
           Select State / UT
         </label>
-        <select 
+        <select
           value={selectedState}
           onChange={(e) => setSelectedState(e.target.value)}
           className="w-full p-4 rounded-xl border border-slate-300 bg-slate-50 font-medium text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none mb-6"
@@ -96,9 +96,9 @@ export const IndiaDashboard = () => {
           </div>
         </div>
 
-        <a 
-          href="https://electoralsearch.eci.gov.in/" 
-          target="_blank" 
+        <a
+          href="https://electoralsearch.eci.gov.in/"
+          target="_blank"
           rel="noreferrer"
           className="w-full py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-md transition-all flex justify-center items-center gap-2"
         >
@@ -114,11 +114,11 @@ export const IndiaDashboard = () => {
             Know Your Candidate (KYC) Search
           </h3>
           <p className="text-sm text-slate-500 mb-6">Enter your Vidhan Sabha or Lok Sabha constituency name to view declared assets and records.</p>
-          
+
           <form onSubmit={handleKYCSearch} className="flex gap-2 mb-6">
-            <input 
-              type="text" 
-              placeholder="e.g. Chennai South" 
+            <input
+              type="text"
+              placeholder="e.g. Chennai South"
               value={constituency}
               onChange={e => setConstituency(e.target.value)}
               className="flex-1 p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -160,7 +160,7 @@ export const IndiaDashboard = () => {
         </div>
 
         {/* Polling Booth locator */}
-        <Link 
+        <Link
           to="/map"
           className="bg-civic-blue p-6 rounded-3xl text-white shadow-md hover:bg-blue-700 transition-colors flex items-center justify-between group"
         >

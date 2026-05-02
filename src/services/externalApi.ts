@@ -18,22 +18,22 @@ export const fetchElectionNews = async () => {
     } else {
       throw new Error("Failed to fetch from RSS2JSON API");
     }
-  } catch (error) {
+  } catch {
     logger.warn("Using fallback news due to API rate limits.");
     return [
-      { 
-        title: "Millions Expected to Register for Upcoming National Elections", 
-        pubDate: new Date().toISOString(), 
+      {
+        title: "Millions Expected to Register for Upcoming National Elections",
+        pubDate: new Date().toISOString(),
         link: "#"
       },
-      { 
-        title: "New Voting Technology Aims to Reduce Wait Times at Polling Stations", 
-        pubDate: new Date().toISOString(), 
+      {
+        title: "New Voting Technology Aims to Reduce Wait Times at Polling Stations",
+        pubDate: new Date().toISOString(),
         link: "#"
       },
-      { 
-        title: "Youth Voter Turnout Projected to Reach Historic Highs, Experts Say", 
-        pubDate: new Date().toISOString(), 
+      {
+        title: "Youth Voter Turnout Projected to Reach Historic Highs, Experts Say",
+        pubDate: new Date().toISOString(),
         link: "#"
       }
     ];

@@ -1,9 +1,9 @@
 import { logger } from "../utils/logger";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  ChevronLeft, GraduationCap, Map, User, BookOpen, 
+import {
+  ChevronLeft, Map, User,
   Target, Presentation, History, Globe, FileText,
   BadgeCheck, School
 } from "lucide-react";
@@ -62,13 +62,13 @@ export const JourneySetup = () => {
   const { profile, user } = useAuth();
   const { setLanguage, t } = useLanguage();
   const [step, setStep] = useState(-1); // -1 is the Quick Start branch
-  
+
   // Register static texts mapping dynamically
   useEffect(() => {
     // Actually, useLanguage doesn't auto-register.
     // It's better to rely on dynamic t(str) which will register if missing.
   }, []);
-  
+
   const [data, setData] = useState<OnboardState>({
     country: "in",
     residence: "",
@@ -102,7 +102,7 @@ export const JourneySetup = () => {
       return [
         { id: "en", name: "English" },
         { id: "es", name: "Spanish (Español)" },
-        { id: "fr", name: "French (Français)" }, 
+        { id: "fr", name: "French (Français)" },
       ];
     }
     return [
@@ -114,7 +114,7 @@ export const JourneySetup = () => {
   // Handlers
   const handleSelect = (key: keyof OnboardState, value: string | boolean | null) => {
     setData((prev) => ({ ...prev, [key]: value }));
-    
+
     if (key === 'language' && typeof value === 'string') {
       setLanguage(value);
     }
@@ -146,10 +146,10 @@ export const JourneySetup = () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    
+
     // Save to localStorage (The Sandbox / Blueprint)
     localStorage.setItem("civicpath_journey", JSON.stringify(journeyData));
-    
+
     // Tier 2: Save to User Sandbox in Firestore if logged in
     if (user?.uid) {
       try {
@@ -173,7 +173,7 @@ export const JourneySetup = () => {
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       {/* Top Navigation / Progress */}
       <div className="w-full h-16 flex items-center justify-between px-4 sm:px-6 bg-white shrink-0 sticky top-0 z-10">
-        <button 
+        <button
           onClick={() => step > -1 ? setStep(step - 1) : navigate("/")}
           className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-500 transition-colors"
           aria-label="Go back"
@@ -184,8 +184,8 @@ export const JourneySetup = () => {
         {/* Progress Dots */}
         <div className="flex gap-2.5">
           {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-            <div 
-              key={i} 
+            <div
+              key={i}
               className={cn(
                 "h-2 rounded-full transition-all duration-300",
                 i === step ? "bg-civic-blue w-8" : "bg-slate-200 w-2",
@@ -195,7 +195,7 @@ export const JourneySetup = () => {
           ))}
         </div>
 
-        <button 
+        <button
           onClick={() => navigate("/")}
           className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors"
           aria-label="Cancel Onboarding"
@@ -207,7 +207,7 @@ export const JourneySetup = () => {
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto px-4 py-8 md:py-12 flex flex-col items-center">
         <div className="max-w-2xl w-full">
-          
+
           <AnimatePresence mode="wait">
 
             {/* QUICK START BRANCH */}
@@ -247,7 +247,7 @@ export const JourneySetup = () => {
                 </div>
               </motion.div>
             )}
-            
+
             {/* STEP 1: COUNTRY */}
             {step === 0 && (
               <motion.div key="step0" variants={slideVariants} initial="initial" animate="enter" exit="exit" className="flex flex-col">
@@ -265,13 +265,13 @@ export const JourneySetup = () => {
                         onClick={() => handleSelect("country", c.id)}
                         className={cn(
                           "flex flex-col items-center justify-center p-6 bg-white rounded-2xl border transition-all duration-200 hover:shadow-md hover:-translate-y-1 active:scale-95",
-                          isSelected 
-                            ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20" 
+                          isSelected
+                            ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20"
                             : "border-slate-200"
                         )}
                       >
-                        <img 
-                          src={`https://flagcdn.com/w80/${c.id}.png`} 
+                        <img
+                          src={`https://flagcdn.com/w80/${c.id}.png`}
                           alt={`${c.name} flag`}
                           className="w-12 h-12 object-cover rounded-full shadow-sm mb-3 border border-slate-100"
                         />
@@ -294,21 +294,21 @@ export const JourneySetup = () => {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">{t("State / Province / Region")}</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={data.region || ""}
                       onChange={(e) => setData(prev => ({ ...prev, region: e.target.value }))}
-                      placeholder={t("e.g. California, Maharashtra")} 
+                      placeholder={t("e.g. California, Maharashtra")}
                       className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-civic-blue transition-colors"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">{t("Postal Code / Zip Code")}</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={data.postalCode || ""}
                       onChange={(e) => setData(prev => ({ ...prev, postalCode: e.target.value }))}
-                      placeholder={t("e.g. 90210, 400001")} 
+                      placeholder={t("e.g. 90210, 400001")}
                       className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-civic-blue transition-colors"
                     />
                   </div>
@@ -341,8 +341,8 @@ export const JourneySetup = () => {
                     onClick={() => handleSelect("isFirstTimeVoter", true)}
                     className={cn(
                         "flex flex-col items-center justify-center p-6 bg-white rounded-2xl border transition-all duration-200 hover:shadow-md hover:-translate-y-1 active:scale-95",
-                        data.isFirstTimeVoter === true 
-                        ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20" 
+                        data.isFirstTimeVoter === true
+                        ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20"
                         : "border-slate-200"
                     )}
                   >
@@ -353,8 +353,8 @@ export const JourneySetup = () => {
                     onClick={() => handleSelect("isFirstTimeVoter", false)}
                     className={cn(
                         "flex flex-col items-center justify-center p-6 bg-white rounded-2xl border transition-all duration-200 hover:shadow-md hover:-translate-y-1 active:scale-95",
-                        data.isFirstTimeVoter === false 
-                        ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20" 
+                        data.isFirstTimeVoter === false
+                        ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20"
                         : "border-slate-200"
                     )}
                   >
@@ -380,8 +380,8 @@ export const JourneySetup = () => {
                         onClick={() => handleSelect("registrationStatus", status.toLowerCase())}
                         className={cn(
                             "flex flex-col items-center justify-center p-6 bg-white rounded-2xl border transition-all duration-200 hover:shadow-md hover:-translate-y-1 active:scale-95",
-                            data.registrationStatus === status.toLowerCase() 
-                            ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20" 
+                            data.registrationStatus === status.toLowerCase()
+                            ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20"
                             : "border-slate-200"
                         )}
                     >
@@ -410,8 +410,8 @@ export const JourneySetup = () => {
                         onClick={() => handleSelect("persona", p.id)}
                         className={cn(
                           "flex items-start gap-4 p-6 bg-white rounded-2xl border text-left transition-all duration-200 hover:shadow-md hover:-translate-y-1 active:scale-95 group",
-                          isSelected 
-                            ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20" 
+                          isSelected
+                            ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20"
                             : "border-slate-200"
                         )}
                       >
@@ -444,15 +444,15 @@ export const JourneySetup = () => {
                   {getLanguages().map((lang) => {
                     const isSelected = data.language === lang.id;
                     const isDetected = typeof navigator !== 'undefined' && navigator.language.toLowerCase().startsWith(lang.id);
-                    
+
                     return (
                       <button
                         key={lang.id}
                         onClick={() => handleSelect("language", lang.id)}
                         className={cn(
                           "relative p-4 bg-white rounded-xl border-2 transition-all duration-200 hover:shadow-md active:scale-95 text-center flex flex-col items-center justify-center gap-1",
-                          isSelected 
-                            ? "border-civic-blue bg-blue-50/50" 
+                          isSelected
+                            ? "border-civic-blue bg-blue-50/50"
                             : "border-slate-100 hover:border-slate-200"
                         )}
                       >
@@ -500,8 +500,8 @@ export const JourneySetup = () => {
                         onClick={() => handleSelect("goal", g.id)}
                         className={cn(
                            "flex flex-col items-center text-center gap-3 p-6 bg-white rounded-2xl border transition-all duration-200 hover:shadow-md hover:-translate-y-1 active:scale-95 group",
-                           isSelected 
-                             ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20" 
+                           isSelected
+                             ? "border-civic-blue bg-blue-50/50 ring-2 ring-civic-blue/20"
                              : "border-slate-200"
                         )}
                       >

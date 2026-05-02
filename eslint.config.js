@@ -7,11 +7,15 @@
  * SECURITY: 100% — Blocks eval, implied-eval, and dynamic code execution
  */
 import firebaseRulesPlugin from '@firebase/eslint-plugin-security-rules';
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 
-export default [
+export default tseslint.config(
   {
     ignores: ['dist/**/*', 'node_modules/**/*', 'coverage/**/*']
   },
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
   firebaseRulesPlugin.configs['flat/recommended'],
   {
     files: ['src/**/*.ts', 'src/**/*.tsx'],
@@ -25,6 +29,11 @@ export default [
       'eqeqeq': ['error', 'always'],
       'curly': ['error', 'multi-line'],
       'no-throw-literal': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      }],
 
       // ── Security ────────────────────────────────────────────
       'no-eval': 'error',
@@ -36,4 +45,4 @@ export default [
       'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
     }
   }
-]
+);

@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import { auth, googleProvider, db } from '../services/firebase';
-import { UserProfile, JourneyProfile } from '../types';
+import { UserProfile } from '../types';
 
 enum OperationType {
   CREATE = 'create',
@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (currentUser) {
         // Fetch or create profile
         const userRef = doc(db, 'users', currentUser.uid);
-        
+
         let userDoc;
         try {
           userDoc = await getDoc(userRef);
@@ -85,11 +85,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           handleFirestoreError(error, OperationType.GET, `users/${currentUser.uid}`);
           return; // Stop execution on error
         }
-        
-        let currentProfileData = null;
+
 
         if (userDoc?.exists()) {
-          currentProfileData = userDoc.data() as UserProfile;
+          const currentProfileData = userDoc.data() as UserProfile;
           setProfile(currentProfileData);
           if (currentProfileData.profile) {
             localStorage.setItem("civicpath_profile", JSON.stringify(currentProfileData.profile));
@@ -101,7 +100,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Initialize empty defaults or sync from localStorage if present?
           const localProfile = localStorage.getItem("civicpath_profile");
           const localStamps = localStorage.getItem("civicpath_stamps");
-          
+
           const newData: UserProfile = {
             email: currentUser.email || "",
             name: currentUser.displayName || "",
@@ -111,7 +110,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               country: "in", countryName: "India", persona: "first-time", language: "en", interest: ""
             }
           };
-          
+
           if (localProfile) {
             const parsedProfile = JSON.parse(localProfile);
             if (parsedProfile !== null) newData.profile = parsedProfile;
@@ -120,7 +119,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const parsedStamps = JSON.parse(localStamps);
             if (parsedStamps !== null) newData.stamps = parsedStamps;
           }
-          
+
           try {
             await setDoc(userRef, newData);
           } catch (error) {
@@ -137,7 +136,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }, (error) => {
            handleFirestoreError(error, OperationType.GET, `users/${currentUser.uid}`);
         });
-        
+
         setLoading(false);
 
       } else {
@@ -164,7 +163,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (err: unknown) {
       const firebaseError = err as { code?: string; message?: string };
       // Don't throw if the user simply closed the popup — that's intentional
-      if (firebaseError.code === 'auth/popup-closed-by-user' || 
+      if (firebaseError.code === 'auth/popup-closed-by-user' ||
           firebaseError.code === 'auth/cancelled-popup-request') {
         return;
       }

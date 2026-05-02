@@ -25,13 +25,13 @@ export const Step3Candidates = ({ profile, onPass }: { profile: JourneyProfile, 
   const handleKgSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!kgSearchQuery.trim()) return;
-    
+
     setIsKgSearching(true);
     setKgError("");
     setKgResult(null);
 
     const result = await searchKnowledgeGraph(kgSearchQuery);
-    
+
     if (result) {
       setKgResult(result);
     } else {
@@ -44,7 +44,7 @@ export const Step3Candidates = ({ profile, onPass }: { profile: JourneyProfile, 
     const fetchContent = async () => {
       const prompt = `Provide a nonpartisan guide on how to research political candidates and parties in ${profile.countryName}. 
       Give 3 key questions a voter should ask themselves when evaluating a candidate's platform. Output in markdown, no code blocks.`;
-      
+
       const response = await generateGuideContent(prompt, {
         country: profile.country,
         persona: profile.persona,
@@ -70,7 +70,7 @@ export const Step3Candidates = ({ profile, onPass }: { profile: JourneyProfile, 
         { name: "Labour Party", desc: "Centre-left political party in the United Kingdom." },
       ]
     };
-    
+
     setTimeout(() => {
       setParties(mockParties[profile.country] || [
         { name: "Major Party A", desc: "A significant political party in your country." },
@@ -123,7 +123,7 @@ export const Step3Candidates = ({ profile, onPass }: { profile: JourneyProfile, 
             Edge Cache: Instant load from your device.
           </div>
         )}
-        
+
         {content ? (
           <ReactMarkdown>{content}</ReactMarkdown>
         ) : (
@@ -147,15 +147,15 @@ export const Step3Candidates = ({ profile, onPass }: { profile: JourneyProfile, 
         </p>
 
         <form onSubmit={handleKgSearch} className="flex gap-2 mb-6">
-          <input 
-            type="text" 
+          <input
+            type="text"
             placeholder="Search candidates or parties..."
             value={kgSearchQuery}
             onChange={(e) => setKgSearchQuery(e.target.value)}
             className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-civic-blue"
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isKgSearching || !kgSearchQuery.trim()}
             className="px-4 py-2 bg-slate-800 text-white font-bold rounded-xl text-sm flex items-center gap-2 hover:bg-slate-900 disabled:opacity-50"
           >
@@ -174,9 +174,9 @@ export const Step3Candidates = ({ profile, onPass }: { profile: JourneyProfile, 
         {kgResult && (
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row gap-6 items-start">
             {kgResult.image && (
-              <img 
-                src={kgResult.image.contentUrl} 
-                alt={kgResult.name} 
+              <img
+                src={kgResult.image.contentUrl}
+                alt={kgResult.name}
                 className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-xl shrink-0 bg-slate-50 border border-slate-100"
               />
             )}
@@ -196,9 +196,9 @@ export const Step3Candidates = ({ profile, onPass }: { profile: JourneyProfile, 
                 </p>
               )}
               {kgResult.detailedDescription?.url && (
-                <a 
-                  href={kgResult.detailedDescription.url} 
-                  target="_blank" 
+                <a
+                  href={kgResult.detailedDescription.url}
+                  target="_blank"
                   rel="noreferrer"
                   className="text-civic-blue text-sm font-bold hover:underline inline-flex items-center gap-1"
                 >

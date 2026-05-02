@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Globe, Users, Vote, Crown, Calendar, AlertTriangle, ArrowRight } from "lucide-react";
-import { COUNTRIES, CountryConfig } from "../data/CountryData";
+import { COUNTRIES } from "../data/CountryData";
 import { fetchHeadsOfGovernment } from "../services/wikidataService";
 import { useAuth } from "../lib/AuthContext";
 import { useLanguage } from "../lib/LanguageContext";
@@ -74,13 +74,13 @@ export const Countries = () => {
     // Read existing profile to keep persona if already onboarded
     const rawProfile = localStorage.getItem("civicpath_profile");
     const profile = rawProfile ? JSON.parse(rawProfile) : { persona: "citizen", language: "en" };
-    
+
     profile.country = countryId;
     profile.countryName = countryName;
     localStorage.setItem("civicpath_profile", JSON.stringify(profile));
-    
+
     await saveProfile({ profile });
-    
+
     // Jump straight into the guide Step 1
     navigate("/guide");
   };
@@ -98,7 +98,7 @@ export const Countries = () => {
         <div className="absolute right-0 top-0 opacity-10 w-96 h-96 pointer-events-none translate-x-1/3 -translate-y-1/3">
           <Globe className="w-full h-full text-white" />
         </div>
-        
+
         <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight drop-shadow-md">
             {t("Country Explorer")}
@@ -116,7 +116,7 @@ export const Countries = () => {
             <p className="font-bold text-slate-500">{t("Synchronizing Global Electoral Data...")}</p>
           </div>
         ) : (
-          <motion.div 
+          <motion.div
             initial="hidden"
             animate="visible"
             variants={{
@@ -147,10 +147,10 @@ export const Countries = () => {
                   {/* Top: Flag & Title */}
                   <div className="p-5 flex items-start gap-4 border-b border-slate-50">
                     <div className="w-16 h-12 rounded bg-slate-100 overflow-hidden shrink-0 shadow-sm border border-slate-200 flex items-center justify-center text-3xl relative">
-                      <img 
-                        src={`https://flagcdn.com/${country.id}.svg`} 
-                        alt={`${country.name} flag`} 
-                        className="absolute inset-0 w-full h-full object-cover" 
+                      <img
+                        src={`https://flagcdn.com/${country.id}.svg`}
+                        alt={`${country.name} flag`}
+                        className="absolute inset-0 w-full h-full object-cover"
                       />
                       <span className="opacity-0">{rData.emoji || "🏳️"}</span>
                     </div>

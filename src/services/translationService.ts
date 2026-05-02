@@ -39,12 +39,12 @@ export const translateTextBatch = async (texts: string[], targetLang: string): P
         format: "text"
       })
     });
-    
+
     if (!res.ok) {
       logger.error("Translation API Failed", await res.text());
       return texts;
     }
-    
+
     const data = await res.json();
     if (data.data?.translations) {
       return data.data.translations.map((t: TranslationResult) => t.translatedText || t);

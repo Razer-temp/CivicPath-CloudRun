@@ -1,5 +1,5 @@
 import { logger } from "../../utils/logger";
-import React, { Component, ErrorInfo, ReactNode } from "react";
+import { Component, ErrorInfo, ReactNode } from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 
 interface Props {
@@ -22,14 +22,14 @@ export class QuotaErrorBoundary extends Component<Props, State> {
   public static getDerivedStateFromError(error: Error): State {
     // Determine error type based on message
     const msg = error.message.toLowerCase();
-    
+
     if (msg.includes("quota exceeded") || msg.includes("firebase") || msg.includes("too many requests") || msg.includes("429")) {
-      return { 
-        hasError: true, 
-        errorType: msg.includes("429") ? "rate_limit" : "quota" 
+      return {
+        hasError: true,
+        errorType: msg.includes("429") ? "rate_limit" : "quota"
       };
     }
-    
+
     return { hasError: true, errorType: "other" };
   }
 
@@ -49,8 +49,8 @@ export class QuotaErrorBoundary extends Component<Props, State> {
             <AlertTriangle className="w-8 h-8" />
           </div>
           <h2 className="text-xl font-bold text-slate-800 mb-2">
-            {this.state.errorType === "rate_limit" 
-              ? "High Traffic Alert" 
+            {this.state.errorType === "rate_limit"
+              ? "High Traffic Alert"
               : "System Taking a Break"}
           </h2>
           <p className="text-slate-600 mb-6 font-medium leading-relaxed">

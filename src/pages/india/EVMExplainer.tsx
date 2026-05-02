@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ArrowRight, Printer, Volume2, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Volume2, CheckCircle2 } from "lucide-react";
 
 export const EVMExplainer = () => {
   const [step, setStep] = useState(1);
-  const [beepPlayed, setBeepPlayed] = useState(false);
 
   const nextStep = () => {
     if (step < 6) setStep(step + 1);
@@ -30,7 +29,7 @@ export const EVMExplainer = () => {
         {/* Left: Animation Canvas */}
         <div className="w-full md:w-3/5 bg-slate-900 border-b md:border-b-0 md:border-r border-slate-800 p-8 min-h-[400px] flex items-center justify-center relative overflow-hidden">
           <AnimatePresence mode="wait">
-            
+
             {step === 1 && (
               <motion.div key="step1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center text-white">
                 <div className="w-48 h-64 border-4 border-slate-700 bg-slate-800 rounded-lg mx-auto flex flex-col justify-around p-4 opacity-50">
@@ -59,13 +58,13 @@ export const EVMExplainer = () => {
             {step === 3 && (
               <motion.div key="step3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative text-center">
                 <div className="w-24 h-24 bg-blue-500 rounded-full shadow-[0_0_30px_rgba(59,130,246,0.6)] flex items-center justify-center mx-auto relative z-10 border-4 border-blue-400">
-                  <motion.div 
+                  <motion.div
                     animate={{ scale: [1, 0.9, 1] }}
                     transition={{ repeat: Infinity, duration: 1 }}
                     className="w-16 h-16 bg-blue-600 rounded-full"
                   />
                 </div>
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: -10 }}
                   className="absolute top-0 right-0"
@@ -78,8 +77,8 @@ export const EVMExplainer = () => {
 
             {step === 4 && (
               <motion.div key="step4" initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ opacity: 0 }} className="text-center">
-                <motion.div 
-                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }} 
+                <motion.div
+                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
                   transition={{ repeat: Infinity, duration: 0.5 }}
                 >
                   <Volume2 className="w-32 h-32 text-red-500 mx-auto" />
@@ -94,7 +93,7 @@ export const EVMExplainer = () => {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] uppercase px-4 py-1 rounded w-max">VVPAT Transparent Window</div>
                 <div className="w-full bg-[#111] h-48 rounded p-2 overflow-hidden flex flex-col justify-between items-center relative">
                   {/* Paper Slip */}
-                  <motion.div 
+                  <motion.div
                     initial={{ y: -100 }}
                     animate={{ y: 10 }}
                     transition={{ type: "spring" }}
@@ -167,14 +166,14 @@ export const EVMExplainer = () => {
           </div>
 
           <div className="flex gap-4 mt-8">
-            <button 
+            <button
               onClick={prevStep}
               disabled={step === 1}
               className="px-6 py-3 font-semibold text-slate-500 disabled:opacity-30 hover:bg-slate-100 rounded-xl transition-colors"
             >
               Back
             </button>
-            <button 
+            <button
               onClick={nextStep}
               disabled={step === 6}
               className="flex-1 bg-civic-blue text-white font-bold py-3 rounded-xl shadow-[0_4px_14px_0_rgba(0,118,255,0.39)] hover:shadow-[0_6px_20px_rgba(0,118,255,0.23)] hover:bg-[rgba(0,118,255,0.9)] transition-all disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-2"

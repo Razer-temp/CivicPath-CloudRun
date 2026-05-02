@@ -17,18 +17,6 @@ import { generateText } from "../services/geminiService";
 import { searchKnowledgeGraph, KnowledgeGraphEntity } from "../services/knowledgeGraphService";
 import { useLanguage } from "../lib/LanguageContext";
 
-interface WikiData {
-  extract: string;
-  thumbnail?: {
-    source: string;
-  };
-  content_urls: {
-    desktop: {
-      page: string;
-    };
-  };
-}
-
 export const LearnPage = () => {
   const { t } = useLanguage();
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
@@ -153,7 +141,7 @@ Answer their question concisely in simple, easy-to-understand terms. Keep it inf
 
       const response = await generateText(prompt);
       setChatHistory((prev) => [...prev, { role: "ai", text: response }]);
-    } catch (err) {
+    } catch {
       setChatHistory((prev) => [
         ...prev,
         { role: "ai", text: "Oops, I encountered an issue. Please try again." },

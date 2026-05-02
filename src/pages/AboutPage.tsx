@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { 
+import {
   Info, Cpu, Webhook, Database, Blocks, Bot, FileCode2,
-  Trophy, Heart, Github, Star, CheckCircle, Zap, ShieldCheck, Globe
+  Trophy, Github, Star, CheckCircle, Zap, ShieldCheck, Globe
 } from "lucide-react";
 
 import { useLanguage } from "../lib/LanguageContext";
@@ -10,7 +10,7 @@ export const AboutPage = () => {
   const { t } = useLanguage();
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 md:py-16 pb-24 space-y-24">
-      
+
       {/* 1. Hero & Problem Statement */}
       <section className="text-center max-w-4xl mx-auto space-y-6">
         <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="inline-flex items-center justify-center w-16 h-16 bg-civic-blue text-white rounded-[2rem] shadow-xl shadow-blue-900/20 mb-2">
@@ -28,7 +28,7 @@ export const AboutPage = () => {
       {/* 2. How It Was Built */}
       <section className="max-w-4xl mx-auto">
         <h2 className="text-3xl font-black text-slate-800 tracking-tight mb-6 flex items-center gap-3">
-          <Blocks className="w-8 h-8 text-indigo-500" /> 
+          <Blocks className="w-8 h-8 text-indigo-500" />
           {t("How It Was Built")}
         </h2>
         <div className="prose prose-slate prose-lg md:prose-xl max-w-none text-slate-600 font-medium leading-relaxed">
@@ -36,7 +36,7 @@ export const AboutPage = () => {
             {t("We approached CivicPath with a strict")} <strong>{t("Zero-Cost & Serverless First")}</strong> {t("constraint for the Virtual Prompt Wars Hackathon 2026. The goal was to build a highly scalable, personalized Progressive Web App (PWA) without spinning up costly database instances or relying on paid third-party APIs.")}
           </p>
           <p>
-            {t("The interface is built entirely with React, Vite, and Tailwind CSS. Instead of hitting external heavy language translation APIs risking latency, we utilized the native browser")} <strong>{t("Web Speech API")}</strong> {t("coupled seamlessly with")} <strong>{t("Gemini 2.5 Flash")}</strong>. {t("Deep structural data is mocked via zero-latency local JSON CMS adapters, guaranteeing 100% uptime, while user state is managed securely via highly persistent DOM storage architectures.")} 
+            {t("The interface is built entirely with React, Vite, and Tailwind CSS. Instead of hitting external heavy language translation APIs risking latency, we utilized the native browser")} <strong>{t("Web Speech API")}</strong> {t("coupled seamlessly with")} <strong>{t("Gemini 2.5 Flash")}</strong>. {t("Deep structural data is mocked via zero-latency local JSON CMS adapters, guaranteeing 100% uptime, while user state is managed securely via highly persistent DOM storage architectures.")}
           </p>
         </div>
       </section>
@@ -52,7 +52,7 @@ export const AboutPage = () => {
              <h3 className="font-bold text-xl relative z-10">PWA Client</h3>
              <p className="text-slate-400 text-sm mt-2 relative z-10">React 18 + Vite + Tailwind<br/>(Static Hosting)</p>
           </div>
-          
+
           {/* Middle Tier */}
           <div className="flex flex-col gap-6 h-64">
              <div className="bg-indigo-50 border border-indigo-100 rounded-3xl p-6 shadow-sm flex-1 flex flex-col items-center justify-center text-center">
@@ -152,7 +152,7 @@ export const AboutPage = () => {
       <section className="bg-slate-900 rounded-[3rem] p-8 md:p-16 text-white text-center">
         <h2 className="text-3xl font-black tracking-tight mb-4">Lighthouse Performance</h2>
         <p className="text-slate-400 font-medium mb-12 max-w-2xl mx-auto">Architected for instantaneous loads and zero layout shifts. 100% accessible to screen readers.</p>
-        
+
         <div className="flex flex-wrap justify-center gap-8 md:gap-16">
           {[
             { label: "Performance", score: 98, color: "text-emerald-400" },
@@ -176,7 +176,7 @@ export const AboutPage = () => {
 
       {/* 7. Creator & Feedback Form */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto items-start">
-        
+
         {/* Creator Info */}
         <div className="bg-blue-50 border border-blue-100 rounded-3xl p-8 text-center md:text-left space-y-6">
           <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center text-white mx-auto md:mx-0 shadow-lg shadow-blue-500/20">
@@ -186,7 +186,7 @@ export const AboutPage = () => {
             <h3 className="text-2xl font-black text-slate-800 mb-2">Hackathon Submission</h3>
             <p className="text-slate-600 font-medium leading-relaxed">Built for the Virtual Prompt Wars Hackathon 2026. Designed with ❤️ to empower the next generation of voters.</p>
           </div>
-          
+
           <div className="pt-4 flex flex-col gap-3">
              <a href="https://github.com/questonaut/civicpath" target="_blank" rel="noreferrer" className="flex items-center justify-center md:justify-start gap-2 text-slate-700 hover:text-black font-bold transition-colors">
                <Github className="w-5 h-5"/> View Source on GitHub
@@ -204,10 +204,10 @@ export const AboutPage = () => {
               <h3 className="font-black text-slate-800 text-sm">Judge Feedback / Experience Rating</h3>
            </div>
            {/* Mock embedded google form so it loads fast and serves the purpose */}
-           <iframe 
-             src="https://docs.google.com/forms/d/e/1FAIpQLSd_mock_form_for_hackathon/viewform?embedded=true" 
-             width="100%" 
-             height="100%" 
+           <iframe
+             src="https://docs.google.com/forms/d/e/1FAIpQLSd_mock_form_for_hackathon/viewform?embedded=true"
+             width="100%"
+             height="100%"
              className="pt-14 border-0"
              title="Feedback Form"
              content="Notice: Due to iframe sandbox restrictions, you may need to open this form in a new tab if it doesn't load a real URL."

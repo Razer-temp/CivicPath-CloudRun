@@ -16,9 +16,6 @@
  * ```
  */
 
-/** Log levels supported by the CivicPath logger */
-type LogLevel = 'debug' | 'info' | 'warn' | 'error';
-
 /** Whether the app is running in development mode */
 const isDev = import.meta.env.DEV;
 
@@ -35,6 +32,7 @@ export const logger = {
    */
   debug(message: string, ...args: unknown[]): void {
     if (isDev) {
+      // eslint-disable-next-line no-console
       console.debug(`[CivicPath:DEBUG] ${message}`, ...args);
     }
   },
@@ -46,6 +44,7 @@ export const logger = {
    */
   info(message: string, ...args: unknown[]): void {
     if (isDev) {
+      // eslint-disable-next-line no-console
       console.info(`[CivicPath:INFO] ${message}`, ...args);
     }
   },

@@ -1,9 +1,9 @@
 import { logger } from "../../utils/logger";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Sparkles, Check, X, ChevronDown, ShieldAlert, Bookmark, BookmarkCheck } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { generateText } from "../../services/geminiService";
-import { crowdCache, FirebaseMythEntry } from "../../services/firestoreCache";
+import { crowdCache } from "../../services/firestoreCache";
 import { cn } from "../../lib/utils";
 import { useAuth } from "../../lib/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
@@ -26,11 +26,11 @@ export const MythBuster = ({ topic, country }: MythBusterProps) => {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { user } = useAuth();
-  
+
   const handleSave = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!user || data.length === 0) return;
-    
+
     setIsSaved(true);
     const contentId = `myth_${Date.now()}`;
     const payload = {
@@ -39,7 +39,7 @@ export const MythBuster = ({ topic, country }: MythBusterProps) => {
       content: JSON.stringify({ topic, country, data }),
       savedAt: new Date().toISOString()
     };
-    
+
     try {
       await setDoc(doc(db, "users", user.uid, "saved_content", contentId), payload);
     } catch (err) {
@@ -53,13 +53,13 @@ export const MythBuster = ({ topic, country }: MythBusterProps) => {
       setIsOpen(false);
       return;
     }
-    
+
     setIsOpen(true);
-    
+
     if (!hasLoaded && data.length === 0) {
       setLoading(true);
       const cacheKey = `myth_${country}_${topic.replace(/[^a-zA-Z0-9]/g, '_')}`;
-      
+
       const cached = await crowdCache.getMyth(cacheKey);
       if (cached && cached.content) {
         try {
@@ -68,24 +68,24 @@ export const MythBuster = ({ topic, country }: MythBusterProps) => {
           setHasLoaded(true);
           setLoading(false);
           return;
-        } catch (e) {
+        } catch {
           // Fall through and regenerate
         }
       }
 
       const prompt = `Generate exactly 3 common myths and their facts about '${topic}' in the context of elections in ${country}. 
       Format strictly as a JSON array of objects with keys "myth" and "fact". Do not use markdown blocks, just the raw JSON array.`;
-      
+
       const response = await generateText(prompt);
-      
+
       try {
         // Strip markdown backticks if present
-        let cleanJson = response.replace(/```json/g, '').replace(/```/g, '').trim();
+        const cleanJson = response.replace(/```json/g, '').replace(/```/g, '').trim();
         const parsed = JSON.parse(cleanJson);
         const newData = parsed.slice(0, 3);
         setData(newData);
         setHasLoaded(true);
-        
+
         crowdCache.saveMyth({
           cache_key: cacheKey,
           country,
@@ -93,7 +93,7 @@ export const MythBuster = ({ topic, country }: MythBusterProps) => {
           content: JSON.stringify(newData),
           timestamp: new Date().toISOString()
         });
-      } catch (err) {
+      } catch {
         // Fallback silently
         setData([
           { myth: "Elections are rigged.", fact: "Elections use highly secure, transparent systems checked by multiple independent observers." },
@@ -108,7 +108,7 @@ export const MythBuster = ({ topic, country }: MythBusterProps) => {
 
   return (
     <div className="bg-gradient-to-br from-indigo-50 to-blue-50/30 rounded-2xl border border-indigo-100 overflow-hidden mt-10">
-      <div 
+      <div
         onClick={handleReveal}
         className="w-full p-5 flex items-center justify-between text-left hover:bg-slate-50/50 transition-colors cursor-pointer"
       >
@@ -125,7 +125,7 @@ export const MythBuster = ({ topic, country }: MythBusterProps) => {
         </div>
         <div className="flex items-center gap-4">
           {hasLoaded && user && (
-            <button 
+            <button
               onClick={handleSave}
               disabled={isSaved}
               className={cn(
@@ -171,7 +171,7 @@ export const MythBuster = ({ topic, country }: MythBusterProps) => {
                         {item.myth}
                       </p>
                     </div>
-                    
+
                     <div className="flex gap-3 pt-3 mt-3 border-t border-slate-50">
                       <div className="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0 mt-0.5">
                         <Check className="w-3.5 h-3.5" />

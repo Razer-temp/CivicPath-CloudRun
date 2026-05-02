@@ -157,8 +157,8 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 md:py-16 pb-24">
-      
-      <motion.div 
+
+      <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         className="print:hidden flex flex-col sm:flex-row items-center justify-between gap-4 mb-10"
@@ -216,17 +216,17 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
                 </p>
               </div>
             </div>
-            
+
             {/* Circular Knowledge Score */}
             <div className="mt-8 md:mt-0 flex flex-col items-center justify-center bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
               <div className="relative w-28 h-28 flex items-center justify-center">
                 <svg className="absolute inset-0 w-full h-full transform -rotate-90">
                   <circle cx="56" cy="56" r={radius} stroke="#f1f5f9" strokeWidth="10" fill="none" />
-                  <motion.circle 
-                    cx="56" cy="56" r={radius} 
-                    stroke="currentColor" 
-                    strokeWidth="10" 
-                    fill="none" 
+                  <motion.circle
+                    cx="56" cy="56" r={radius}
+                    stroke="currentColor"
+                    strokeWidth="10"
+                    fill="none"
                     className="text-civic-blue"
                     strokeLinecap="round"
                     initial={{ strokeDashoffset: circumference }}
@@ -279,7 +279,7 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
           <div className="mb-12 p-8 rounded-[1.5rem] bg-gradient-to-br from-blue-600 to-indigo-800 text-white shadow-xl flex items-start gap-5 relative overflow-hidden">
             {/* Sparkle background pattern */}
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent bg-[length:20px_20px]"></div>
-            
+
             <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur border border-white/30 flex items-center justify-center shrink-0 shadow-inner relative z-10">
               <Sparkles className="w-6 h-6 text-blue-100" />
             </div>
@@ -315,11 +315,11 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
                   { name: "Candidate Verification", date: USER_DATA.completionDates.candidates },
                   { name: "Voting Day Plan", date: USER_DATA.completionDates.votingDay }
                 ].map((step, idx) => (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6 + (idx * 0.1) }}
-                    key={idx} 
+                    key={idx}
                     className="flex justify-between items-center p-4 bg-white border border-slate-200 rounded-xl hover:border-civic-blue/30 transition-colors"
                   >
                     <div className="flex items-center gap-3">
@@ -340,11 +340,11 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
                 </h3>
                 <div className="flex flex-wrap gap-3">
                   {USER_DATA.badges.map((badge, i) => (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.8 + (i * 0.1), type: "spring" }}
-                      key={i} 
+                      key={i}
                       className="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-50 text-amber-800 border border-amber-200 rounded-xl"
                     >
                       <Trophy className="w-4 h-4 text-amber-500" />
@@ -377,7 +377,7 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
               </div>
             </div>
           </div>
-          
+
           <div className="mt-16 pt-8 border-t-2 border-dashed border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400">
             <div className="flex items-center gap-3">
               <Award className="w-6 h-6 text-slate-300" />
@@ -394,7 +394,7 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
       {/* Calendar Sync Modal */}
       {showCalendarModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm print:hidden">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-md overflow-hidden"
@@ -403,7 +403,7 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
               <h2 className="font-bold text-slate-800 flex items-center gap-2">
                 <CalendarPlus className="w-5 h-5 text-civic-blue" /> {t("Save Dates to Calendar")}
               </h2>
-              <button 
+              <button
                 onClick={() => setShowCalendarModal(false)}
                 className="text-slate-400 hover:text-red-500 transition-colors p-1"
               >
@@ -419,7 +419,7 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
                       {new Date(event.start.replace(/(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z/, "$1-$2-$3T$4:$5:$6Z")).toLocaleDateString(language, { month: "short", day: "numeric", year: "numeric" })}
                     </p>
                   </div>
-                  <a 
+                  <a
                     href={createCalLink(event.title, event.start, event.end, event.description)}
                     target="_blank"
                     rel="noreferrer"
@@ -431,7 +431,7 @@ Respond in the language specified by this BCP-47 tag: ${language}`;
               ))}
             </div>
             <div className="p-5 border-t border-slate-100 bg-slate-50/50">
-              <button 
+              <button
                 onClick={() => generateICS(USER_DATA.country)}
                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-900 transition-colors"
               >

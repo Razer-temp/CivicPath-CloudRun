@@ -42,7 +42,7 @@ export interface FirebaseMythEntry {
 }
 
 // Convert arbitrary string format to a valid firestore document ID
-const sanitizeDocId = (id: string) => id.replace(/[^a-zA-Z0-9_\-]/g, '_').substring(0, 128);
+const sanitizeDocId = (id: string) => id.replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 128);
 
 enum OperationType {
   CREATE = 'create',
@@ -75,7 +75,7 @@ export const crowdCache = {
       const safeId = sanitizeDocId(cacheKey);
       const docRef = doc(db, 'ai_responses', safeId);
       const docSnap = await getDoc(docRef);
-      
+
       if (docSnap.exists()) {
         return docSnap.data() as FirebaseCacheEntry;
       }
@@ -96,13 +96,13 @@ export const crowdCache = {
       handleFirestoreError(error, OperationType.WRITE, `ai_responses/${entry.cache_key}`);
     }
   },
-  
+
   async getQuiz(cacheKey: string): Promise<FirebaseQuizEntry | null> {
     try {
       const safeId = sanitizeDocId(cacheKey);
       const docRef = doc(db, 'quiz_content', safeId);
       const docSnap = await getDoc(docRef);
-      
+
       if (docSnap.exists()) {
         return docSnap.data() as FirebaseQuizEntry;
       }
@@ -122,13 +122,13 @@ export const crowdCache = {
        handleFirestoreError(error, OperationType.WRITE, `quiz_content/${entry.cache_key}`);
     }
   },
-  
+
   async getMyth(cacheKey: string): Promise<FirebaseMythEntry | null> {
     try {
       const safeId = sanitizeDocId(cacheKey);
       const docRef = doc(db, 'myth_content', safeId);
       const docSnap = await getDoc(docRef);
-      
+
       if (docSnap.exists()) {
         return docSnap.data() as FirebaseMythEntry;
       }

@@ -16,7 +16,7 @@ export const Step5Results = ({ profile, onPass, stamps = [] }: { profile: Journe
       const prompt = `Explain the election results counting process and government formation in ${profile.countryName}. 
       Explain concepts like "Majority", "Coalition government", and what happens immediately after results are announced. 
       Output in markdown, no code blocks, use simple language.`;
-      
+
       const response = await generateGuideContent(prompt, {
         country: profile.country,
         persona: profile.persona,
@@ -80,7 +80,7 @@ export const Step5Results = ({ profile, onPass, stamps = [] }: { profile: Journe
             Edge Cache: Instant load from your device.
           </div>
         )}
-        
+
         {content ? (
           <ReactMarkdown>{content}</ReactMarkdown>
         ) : (

@@ -46,7 +46,7 @@ export interface CacheInfo {
 export async function generateGuideContent(prompt: string, cacheInfo: CacheInfo): Promise<GuideContentResponse> {
   const gemini = getGemini();
   const lang = localStorage.getItem('civicpath_lang') || 'en';
-  
+
   const STRICT_BOUNDS = `
 [SYSTEM DIRECTIVE]: You are CivicBot, an educational AI for CivicPath.
 CRITICAL CONSTRAINTS:
@@ -70,11 +70,11 @@ CRITICAL CONSTRAINTS:
           model: "gemini-2.5-flash",
           contents: finalPrompt,
         }),
-        new Promise<never>((_, reject) => 
+        new Promise<never>((_, reject) =>
           setTimeout(() => reject(new Error("Gemini AI timeout")), 7000)
         )
       ]);
-      
+
       const text = response.text || "";
       if (text) {
         // Asynchronously save to Local Cache (Layer 3 prep)
@@ -148,7 +148,7 @@ export async function generateText(prompt: string): Promise<string> {
   if (!gemini) {
     return "AI is currently unavailable (API key missing).";
   }
-  
+
   const lang = localStorage.getItem('civicpath_lang') || 'en';
 
   const STRICT_BOUNDS = `
@@ -185,7 +185,7 @@ CRITICAL CONSTRAINTS:
 export async function generateChat(history: { role: "user" | "ai" | "system", text: string }[], systemInstruction: string): Promise<string> {
   const gemini = getGemini();
   if (!gemini) return "AI is currently unavailable.";
-  
+
   const lang = localStorage.getItem('civicpath_lang') || 'en';
 
   const STRICT_BOUNDS = `
@@ -198,7 +198,7 @@ CRITICAL CONSTRAINTS:
 `;
 
   const finalSystemInstruction = STRICT_BOUNDS + systemInstruction + (lang !== 'en' ? `\n\nYou MUST respond to all prompts in the language code: ${lang}. Do not use English unless the user explicitly asks for it.` : "");
-  
+
   try {
     const contents = history.map(h => ({
       role: h.role === "ai" ? "model" : "user",
@@ -212,7 +212,7 @@ CRITICAL CONSTRAINTS:
         systemInstruction: finalSystemInstruction,
       }
     });
-    
+
     return response.text || "No response generated.";
   } catch (err: unknown) {
     const error = err as { message?: string; status?: number };

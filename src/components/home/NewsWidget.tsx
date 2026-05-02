@@ -24,10 +24,10 @@ export const NewsWidget = ({ t, news, loadingNews }: { t: (key: string) => strin
         ) : news.length > 0 ? (
           <div className="grid md:grid-cols-3 gap-6">
             {news.map((item, idx) => (
-              <a 
-                key={idx} 
-                href={item.link} 
-                target="_blank" 
+              <a
+                key={idx}
+                href={item.link}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:border-blue-200 hover:shadow-md transition-all group flex flex-col justify-between"
               >

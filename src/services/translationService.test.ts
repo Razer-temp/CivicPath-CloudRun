@@ -36,10 +36,10 @@ describe('translationService', () => {
   it('should handle API failure gracefully', async () => {
     const mockFetch = vi.fn().mockRejectedValue(new Error('Network error'));
     vi.stubGlobal('fetch', mockFetch);
-    
+
     // Need to set env var for test
     vi.stubGlobal('import', { meta: { env: { VITE_GOOGLE_TRANSLATE_API_KEY: 'test' } } });
-    
+
     const { translateTextBatch } = await import('./translationService');
     const texts = ['Hello'];
     const result = await translateTextBatch(texts, 'hi');

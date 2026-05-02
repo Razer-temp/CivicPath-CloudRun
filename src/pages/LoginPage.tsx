@@ -5,7 +5,7 @@ import { Globe, ShieldCheck, Mail, Lock, User, ArrowRight } from 'lucide-react';
 import { useAuth } from '../lib/AuthContext';
 
 export const LoginPage = () => {
-  const { user, profile, loading, signInWithGoogle, registerWithEmail, loginWithEmail } = useAuth();
+  const { user, loading, signInWithGoogle, registerWithEmail, loginWithEmail } = useAuth();
   const navigate = useNavigate();
 
   const [isSignUp, setIsSignUp] = useState(false);
@@ -92,7 +92,7 @@ export const LoginPage = () => {
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100 rounded-full blur-[100px] opacity-50 -translate-y-1/2 translate-x-1/3" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-100 rounded-full blur-[80px] opacity-50 translate-y-1/3 -translate-x-1/4" />
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="max-w-md w-full bg-white/80 backdrop-blur-xl border border-white rounded-[2rem] shadow-2xl p-8 relative z-10"
@@ -202,7 +202,7 @@ export const LoginPage = () => {
           </div>
         </div>
 
-        <button 
+        <button
           onClick={handleGoogleSignIn}
           disabled={loading || isSubmitting}
           className="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-xl hover:bg-slate-50 hover:border-blue-200 hover:text-civic-blue transition-all disabled:opacity-50"

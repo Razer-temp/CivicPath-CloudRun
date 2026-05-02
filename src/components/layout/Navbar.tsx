@@ -20,7 +20,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { t } = useTranslation([
-    "India Deep Module", "Countries", "Find Booth", "Timeline", 
+    "India Deep Module", "Countries", "Find Booth", "Timeline",
     "My Report", "Quiz", "Compare", "Learn", "Ask AI", "About", "Sign in", "Sign Out"
   ]);
 
@@ -86,7 +86,7 @@ export const Navbar = () => {
                 )}
                 <span className="text-sm font-bold text-slate-700 max-w-[100px] truncate">{user.displayName || 'User'}</span>
               </Link>
-              <button 
+              <button
                 onClick={logout}
                 className="flex items-center gap-1 text-sm font-bold text-slate-500 hover:text-red-500 transition-colors"
                 aria-label="Sign Out"
@@ -97,7 +97,7 @@ export const Navbar = () => {
             </div>
           ) : (
              <>
-               <button 
+               <button
                  onClick={() => navigate('/login')}
                  className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-medium border border-slate-200 rounded-full hover:bg-slate-50 transition-colors focus-visible:ring-2 focus-visible:ring-civic-blue focus-visible:ring-offset-2"
                >

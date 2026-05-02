@@ -15,7 +15,7 @@ export const RumorScanner = ({ country }: { country: string }) => {
 
   const handleScan = async () => {
     if (!claim.trim()) return;
-    
+
     setIsScanning(true);
     setResult(null);
 
@@ -55,7 +55,7 @@ Claim: "${claim}"`;
         },
         required: ["status", "explanation"],
       });
-      
+
       if (parsed && parsed.status && parsed.explanation) {
         setResult(parsed);
         localStorage.setItem(cacheKey, JSON.stringify(parsed));
@@ -77,7 +77,7 @@ Claim: "${claim}"`;
 
     setResult({
       status: isSuspicious ? "suspicious" : "unverified",
-      explanation: isSuspicious 
+      explanation: isSuspicious
         ? "Network is currently congested. This claim contains keywords often associated with 2026 political misinformation. Please verify with independent fact-checkers."
         : "The AI system is experiencing high volume (Rate Limit). We couldn't run a deep scan, please verify manually with official sources.",
       isFallback: true
@@ -112,7 +112,7 @@ Claim: "${claim}"`;
           placeholder="e.g., 'The candidate was caught on a hot mic saying they will cancel the election...'"
           className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-slate-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none h-28"
         />
-        
+
         <button
           onClick={handleScan}
           disabled={!claim.trim() || isScanning}

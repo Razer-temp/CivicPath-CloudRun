@@ -38,7 +38,7 @@ export async function fetchHeadsOfGovernment(wikidataIds: string[]): Promise<Rec
     if (cached) {
       try {
         return JSON.parse(cached);
-      } catch (e) {
+      } catch {
         // invalid cache
       }
     }
@@ -50,18 +50,18 @@ export async function fetchHeadsOfGovernment(wikidataIds: string[]): Promise<Rec
         SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
       }
     `;
-    
+
     const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(query)}&format=json`;
-    const response = await fetch(url, { 
-      headers: { 
+    const response = await fetch(url, {
+      headers: {
         'Accept': 'application/sparql-results+json',
         'Api-User-Agent': 'CivicPath/1.0 (https://github.com/prompt-wars)'
-      } 
+      }
     });
-    
+
     if (!response.ok) return fallback;
     const data = await response.json();
-    
+
     // Process results (taking the first listed Head of Government for each country if multiple are returned)
     const results: Record<string, string> = {};
     for (const binding of data.results.bindings) {
@@ -71,7 +71,7 @@ export async function fetchHeadsOfGovernment(wikidataIds: string[]): Promise<Rec
         results[qNode] = binding.headOfGovLabel.value;
       }
     }
-    
+
     const finalResult = { ...fallback, ...results };
     sessionStorage.setItem(cacheKey, JSON.stringify(finalResult));
     return finalResult;

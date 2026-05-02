@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { generateGuideContent, ContentSource } from "../../services/geminiService";
 import { MythBuster } from "./MythBuster";
 import { GeminiQuiz } from "./GeminiQuiz";
 import { MapPin, Navigation, Clock, AlertTriangle, Globe, HardDrive } from "lucide-react";
-import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
+import { Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 
 const DEFAULT_CENTERS: Record<string, [number, number]> = {
   "India": [28.6139, 77.2090], // New Delhi
@@ -53,7 +53,7 @@ export const Step4VotingDay = ({ profile, onPass }: { profile: JourneyProfile, o
         (position) => {
           setUserLoc([position.coords.latitude, position.coords.longitude]);
         },
-        (error) => {
+        () => {
           setLocationError("Could not access your location. Showing default map.");
         }
       );

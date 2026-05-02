@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CalendarRange, CalendarPlus, ChevronRight, BarChart3, AlertCircle } from "lucide-react";
-import { TIMELINE_CMS, TimelineEvent } from "../data/TimelineData";
+import { TIMELINE_CMS } from "../data/TimelineData";
 import { COUNTRIES } from "./JourneySetup";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useLanguage } from "../lib/LanguageContext";
@@ -23,7 +23,7 @@ export const TimelinePage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
-      
+
       {/* Header & Country Selector */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div className="max-w-2xl">
@@ -39,7 +39,7 @@ export const TimelinePage = () => {
         <div className="shrink-0 w-full md:w-72 bg-white p-3 rounded-2xl shadow-sm border border-slate-200">
           <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-1.5">{t("Select Country")}</label>
           <div className="relative">
-            <select 
+            <select
               value={selectedCountry}
               onChange={(e) => {
                 setSelectedCountry(e.target.value);
@@ -63,30 +63,30 @@ export const TimelinePage = () => {
         <div className="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
           <CalendarRange className="w-64 h-64 text-slate-900" />
         </div>
-        
+
         {/* Horizontal Desktop / Vertical Mobile Container */}
         <div className="relative z-10 w-full pt-4 md:pt-16 pb-4">
-          
+
           {/* The connecting line (background) */}
           <div className="absolute top-8 md:top-[85px] bottom-8 md:bottom-auto left-[27px] md:left-[5%] md:right-[5%] md:translate-x-0 w-[3px] md:w-[90%] md:h-[3px] bg-slate-100 rounded-full z-0"></div>
-          
+
           <div className="flex flex-col md:flex-row justify-between gap-12 md:gap-4 relative z-10">
             {currentTimeline.map((event, index) => {
               const isActive = activeEvent === event.id;
-              
+
               return (
                 <div key={event.id} className="flex-1 flex flex-row md:flex-col items-start md:items-center relative group min-w-[120px]">
-                  
+
                   {/* Node Marker */}
-                  <button 
+                  <button
                     onClick={() => setActiveEvent(isActive ? null : event.id)}
                     className={`shrink-0 w-14 h-14 rounded-full flex items-center justify-center border-4 transition-all duration-300 shadow-sm relative z-20 ${
-                      event.isVotingDay 
-                        ? "bg-civic-blue border-white text-white drop-shadow-lg md:scale-125" 
+                      event.isVotingDay
+                        ? "bg-civic-blue border-white text-white drop-shadow-lg md:scale-125"
                         : event.isMCC
                           ? "bg-amber-500 border-white text-white drop-shadow-md"
-                          : isActive 
-                            ? "bg-slate-800 border-white text-white scale-110 drop-shadow-md" 
+                          : isActive
+                            ? "bg-slate-800 border-white text-white scale-110 drop-shadow-md"
                             : "bg-white border-slate-200 text-slate-400 hover:border-civic-blue hover:text-civic-blue hover:scale-110"
                     }`}
                   >
@@ -98,7 +98,7 @@ export const TimelinePage = () => {
 
                   {/* Content Container */}
                   <div className={`mt-0 ml-6 md:ml-0 md:mt-8 w-full text-left md:text-center transition-all duration-300 ${isActive || event.isVotingDay ? 'opacity-100 translate-y-0' : 'opacity-70 group-hover:opacity-100 group-hover:-translate-y-1'}`}>
-                    
+
                     {event.isMCC && (
                       <span className="inline-block bg-amber-100 text-amber-800 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md mb-2 md:mx-auto">{t("MCC Enforced")}</span>
                     )}
@@ -110,7 +110,7 @@ export const TimelinePage = () => {
 
                     <AnimatePresence>
                       {isActive && (
-                        <motion.div 
+                        <motion.div
                           initial={{ opacity: 0, y: 10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -124,9 +124,9 @@ export const TimelinePage = () => {
                             </div>
                           )}
                           <p className="text-sm text-slate-600 mb-5 leading-relaxed">{t(event.description)}</p>
-                          
+
                           {event.calendarLink && (
-                            <a 
+                            <a
                               href={event.calendarLink}
                               target="_blank"
                               rel="noreferrer"
@@ -151,9 +151,9 @@ export const TimelinePage = () => {
       <div className="bg-slate-900 rounded-[2rem] p-6 md:p-12 shadow-xl relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-blue-900/40 to-transparent pointer-events-none"></div>
-        
+
         <div className="relative z-10 flex flex-col lg:flex-row gap-12 items-center">
-          
+
           <div className="flex-1 text-white">
             <div className="inline-flex bg-white/10 border border-white/20 text-blue-200 px-3 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6 flex items-center gap-2">
               <BarChart3 className="w-4 h-4" /> {t("Live Public Data")}
@@ -179,7 +179,7 @@ export const TimelinePage = () => {
                </div>
             </div>
           </div>
-          
+
           <div className="w-full lg:w-1/2 h-[350px] bg-slate-800 rounded-2xl overflow-hidden shadow-2xl relative group border border-slate-700/50 p-4">
             <div className="flex items-center justify-between mb-4 px-2">
               <h3 className="text-white font-bold text-sm uppercase tracking-wide">{t("Historical Turnout (%)")}</h3>
@@ -200,7 +200,7 @@ export const TimelinePage = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
                 <XAxis dataKey="year" stroke="#94a3b8" tick={{fill: '#94a3b8', fontSize: 12}} tickLine={false} axisLine={false} dy={10} />
                 <YAxis stroke="#94a3b8" tick={{fill: '#94a3b8', fontSize: 12}} tickLine={false} axisLine={false} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '12px', color: '#fff', fontWeight: 'bold' }}
                   itemStyle={{ fontWeight: 'normal' }}
                 />
@@ -209,7 +209,7 @@ export const TimelinePage = () => {
               </AreaChart>
             </ResponsiveContainer>
           </div>
-          
+
         </div>
       </div>
 

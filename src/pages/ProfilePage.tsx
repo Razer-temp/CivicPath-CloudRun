@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Award,
@@ -62,7 +62,7 @@ export const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [handle, setHandle] = useState(profile?.handle || "");
   const [bio, setBio] = useState(profile?.bio || "");
-  
+
   const [isEditingDetails, setIsEditingDetails] = useState(false);
   const [detailsData, setDetailsData] = useState({
     country: profile?.profile?.country || "",
@@ -83,7 +83,7 @@ export const ProfilePage = () => {
     await saveProfile({ profile: updatedProfileDetails });
     setIsEditingDetails(false);
   };
-  
+
   // Safe fallbacks and formatting
   const currentHandle = profile?.handle || `@citizen_${user?.uid?.substring(0, 5) || "xyz"}`;
   const currentBio = profile?.bio || "On a journey to understand and participate in the democratic process.";
@@ -116,13 +116,13 @@ export const ProfilePage = () => {
   const regionDisplay = profile?.profile?.region || "";
   const postalCodeDisplay = profile?.profile?.postalCode || "";
   const firstTimeDisplay = profile?.profile?.isFirstTimeVoter ? "First-Time Voter" : "Experienced Voter";
-  const statusDisplay = profile?.profile?.registrationStatus 
-    ? profile.profile.registrationStatus.charAt(0).toUpperCase() + profile.profile.registrationStatus.slice(1) 
+  const statusDisplay = profile?.profile?.registrationStatus
+    ? profile.profile.registrationStatus.charAt(0).toUpperCase() + profile.profile.registrationStatus.slice(1)
     : "Unsure";
 
   // Synthesize an activity feed from user stamps and chat interactions
   const generateActivityFeed = () => {
-    let activities = [];
+    const activities = [];
 
     // Add initialization event
     activities.push({
@@ -236,9 +236,9 @@ export const ProfilePage = () => {
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-green-50 text-green-700 text-xs font-bold">
                       {t("Verified Voter")}
                     </div>
-                    
+
                     {!isEditing ? (
-                      <button 
+                      <button
                         onClick={() => setIsEditing(true)}
                         className="text-slate-400 hover:text-civic-blue transition-colors p-2 rounded-full hover:bg-blue-50"
                       >
@@ -246,13 +246,13 @@ export const ProfilePage = () => {
                       </button>
                     ) : (
                       <div className="flex gap-2">
-                        <button 
+                        <button
                           onClick={() => setIsEditing(false)}
                           className="text-slate-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-slate-100"
                         >
                           <X className="w-4 h-4" />
                         </button>
-                        <button 
+                        <button
                           onClick={handleSaveProfile}
                           className="text-white bg-civic-blue transition-colors p-2 rounded-full shadow-md"
                         >
@@ -270,21 +270,21 @@ export const ProfilePage = () => {
                     <div className="space-y-3 mt-4">
                       <div>
                         <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Handle</label>
-                        <input 
-                          type="text" 
-                          value={handle} 
-                          onChange={(e) => setHandle(e.target.value)} 
-                          placeholder="@handle" 
+                        <input
+                          type="text"
+                          value={handle}
+                          onChange={(e) => setHandle(e.target.value)}
+                          placeholder="@handle"
                           className="w-full mt-1 p-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-civic-blue outline-none"
                         />
                       </div>
                       <div>
                         <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Bio</label>
-                        <textarea 
+                        <textarea
                           rows={2}
-                          value={bio} 
-                          onChange={(e) => setBio(e.target.value)} 
-                          placeholder="Your civic journey..." 
+                          value={bio}
+                          onChange={(e) => setBio(e.target.value)}
+                          placeholder="Your civic journey..."
                           className="w-full mt-1 p-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-civic-blue outline-none resize-none"
                         />
                       </div>
@@ -388,8 +388,8 @@ export const ProfilePage = () => {
                   <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
                     <Globe className="w-6 h-6 text-white" />
                   </div>
-                  <button 
-                    onClick={() => setIsEditingDetails(true)} 
+                  <button
+                    onClick={() => setIsEditingDetails(true)}
                     className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
                     aria-label="Edit Details"
                   >

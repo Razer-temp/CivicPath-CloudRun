@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { expect, it, describe, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
@@ -41,7 +40,7 @@ describe('Layout Accessibility', () => {
   it('Layout has semantic main element and skip link', async () => {
     // Dynamically import to avoid circular deps
     const { Layout } = await import('./Layout');
-    
+
     const { container } = render(
       <MemoryRouter>
         <Layout />
@@ -60,7 +59,7 @@ describe('Layout Accessibility', () => {
 
   it('should not have critical accessibility violations', async () => {
     const { Layout } = await import('./Layout');
-    
+
     const { container } = render(
       <MemoryRouter>
         <Layout />

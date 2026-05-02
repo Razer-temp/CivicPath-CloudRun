@@ -16,7 +16,7 @@ export const Footer = () => {
               Your guided journey to understanding democracy. Accessible, non-partisan, and completely free.
             </p>
           </div>
-          
+
           <div>
             <h4 className="font-semibold text-slate-900 mb-4">Journey</h4>
             <ul className="space-y-3 text-sm text-slate-600">
@@ -38,7 +38,7 @@ export const Footer = () => {
             </ul>
           </div>
         </div>
-        
+
         <div className="border-t border-slate-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
           <p>© {new Date().getFullYear()} CivicPath. Built for Virtual Prompt Wars.</p>
           <div className="flex gap-4">

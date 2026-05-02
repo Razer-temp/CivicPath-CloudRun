@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mic, MapPin, Search, Calendar, Landmark, CheckCircle, Smartphone } from "lucide-react";
+import { Mic, MapPin, Landmark, CheckCircle } from "lucide-react";
 import { SakshamVoice } from "./india/SakshamVoice";
 import { TierSystemExplainer } from "./india/TierSystemExplainer";
 import { EVMExplainer } from "./india/EVMExplainer";
@@ -15,18 +15,18 @@ export const IndiaModule = () => {
           <svg width="400" height="400" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="2"/>
             {Array.from({ length: 24 }).map((_, i) => (
-              <line 
+              <line
                 key={i}
-                x1="50" y1="50" x2="50" y2="5" 
+                x1="50" y1="50" x2="50" y2="5"
                 stroke="currentColor" strokeWidth="1"
-                transform={`rotate(${i * 15} 50 50)`} 
+                transform={`rotate(${i * 15} 50 50)`}
               />
             ))}
           </svg>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center text-center text-white"
@@ -38,12 +38,12 @@ export const IndiaModule = () => {
               Democracy deeply localized.
             </h1>
             <p className="text-lg md:text-xl font-medium text-orange-50 max-w-2xl drop-shadow">
-              Welcome to the India specific voter journey. 
+              Welcome to the India specific voter journey.
               Built for 968 million voters across 22 scheduled languages, with deep insights into the most complex electoral process on Earth.
             </p>
           </motion.div>
         </div>
-        
+
         {/* Tricolor Bottom Edge */}
         <div className="absolute bottom-0 left-0 w-full flex h-2">
           <div className="w-1/3 bg-[#FF9933]"></div>
@@ -62,7 +62,7 @@ export const IndiaModule = () => {
               Saksham Voice Mode
             </h2>
             <p className="text-slate-600 mb-8 max-w-3xl">
-              Don't want to read? No problem. Speak your question in any of India's 22 scheduled languages. 
+              Don't want to read? No problem. Speak your question in any of India's 22 scheduled languages.
               Our AI will transcribe, analyze, and reply aloud in your exact language. Designed for high accessibility.
             </p>
             <SakshamVoice />
@@ -78,7 +78,7 @@ export const IndiaModule = () => {
               The 3-Tier System
             </h2>
             <p className="text-slate-600 mb-8 max-w-3xl">
-              A common point of confusion for first-time voters is understanding who they are actually voting for in a given year. 
+              A common point of confusion for first-time voters is understanding who they are actually voting for in a given year.
               Explore the differences between the national and state legislative bodies.
             </p>
             <TierSystemExplainer />
@@ -94,7 +94,7 @@ export const IndiaModule = () => {
               Inside the Polling Booth: EVM & VVPAT
             </h2>
             <p className="text-slate-600 mb-8 max-w-3xl">
-              India uses Electronic Voting Machines. Step through this simulation to see exactly how your vote is cast 
+              India uses Electronic Voting Machines. Step through this simulation to see exactly how your vote is cast
               and how the physical paper trail (VVPAT) guarantees your choice is recorded correctly.
             </p>
             <EVMExplainer />
@@ -110,7 +110,7 @@ export const IndiaModule = () => {
               Your State & Constituency Data
             </h2>
             <p className="text-slate-600 mb-8 max-w-3xl">
-              Every state has a distinct timeline, Chief Electoral Officer, and registration portal. 
+              Every state has a distinct timeline, Chief Electoral Officer, and registration portal.
               Look up your local candidates, check your registration, and countdown to 2026.
             </p>
             <IndiaDashboard />

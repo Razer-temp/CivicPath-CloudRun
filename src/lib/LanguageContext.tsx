@@ -33,7 +33,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   // Debounced translation fetcher
   useEffect(() => {
     if (language === 'en') return;
-    
+
     const list = Array.from(pendingTexts).filter(t => !dictionary[t]);
     if (list.length === 0) return;
 
@@ -44,13 +44,13 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         list.forEach((text, i) => {
           newDict[text] = results[i] || text;
         });
-        
+
         setDictionary(prev => {
           const updated = { ...prev, ...newDict };
           localStorage.setItem(`civicpath_dict_${language}`, JSON.stringify(updated));
           return updated;
         });
-        
+
         setPendingTexts(prev => {
           const next = new Set(prev);
           list.forEach(t => next.delete(t));
@@ -60,7 +60,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         logger.error('Translation batch failed', e);
       }
     };
-    
+
     const timeout = setTimeout(fetchTranslation, 500);
     return () => clearTimeout(timeout);
   }, [pendingTexts, language, dictionary]);
@@ -83,12 +83,12 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     if (!text) return "";
     if (language === 'en') return text;
     if (dictionary[text]) return dictionary[text];
-    
+
     if (!pendingTexts.has(text)) {
       // Defer registration to avoid React strict mode set state during render issues
       setTimeout(() => registerTexts([text]), 0);
     }
-    return text; 
+    return text;
   }, [language, dictionary, pendingTexts, registerTexts]);
 
   const contextValue = React.useMemo(
@@ -112,7 +112,7 @@ export const useLanguage = () => {
 // Convenience hook
 export const useTranslation = (staticTexts: string[] = []) => {
   const context = useLanguage();
-  
+
   useEffect(() => {
     if (staticTexts.length > 0 && context.language !== 'en') {
       context.registerTexts(staticTexts);

@@ -56,11 +56,11 @@ export const TierSystemExplainer = () => {
   return (
     <div className="w-full grid gap-4 md:grid-cols-3">
       {chambers.map((chamber) => (
-        <div 
+        <div
           key={chamber.id}
           className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col"
         >
-          <div 
+          <div
             onClick={() => setExpandedId(expandedId === chamber.id ? null : chamber.id)}
             className={`p-6 bg-gradient-to-br ${chamber.color} text-white cursor-pointer hover:opacity-95 transition-opacity relative overflow-hidden`}
           >
@@ -69,8 +69,8 @@ export const TierSystemExplainer = () => {
             </div>
             <h3 className="text-xl font-bold mb-1 relative z-10">{chamber.name}</h3>
             <p className="text-white/80 font-medium text-sm relative z-10 pr-6">{chamber.subtitle}</p>
-            
-            <motion.div 
+
+            <motion.div
               animate={{ rotate: expandedId === chamber.id ? 180 : 0 }}
               className="absolute right-6 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/20"
             >

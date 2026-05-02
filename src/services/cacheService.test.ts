@@ -30,7 +30,7 @@ describe('localCache', () => {
   it('should return cache entry if within TTL', async () => {
     const entry = { text: 'Hello', timestamp: Date.now(), modelVersion: 'gemini-1.5-flash' };
     mockedGet.mockResolvedValueOnce(entry);
-    
+
     const result = await localCache.get('existent');
     expect(result).toEqual(entry);
   });
