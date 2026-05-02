@@ -5,6 +5,7 @@ import { Navigation, MapPin, Search, ThermometerSun, AlertTriangle, ExternalLink
 import { Map, AdvancedMarker, Pin, InfoWindow } from '@vis.gl/react-google-maps';
 import { fetchHistoricalWeather } from "../services/weatherService";
 import { useLanguage } from "../lib/LanguageContext";
+import { useToast } from "../lib/ToastContext";
 
 type Booth = {
   id: string;
@@ -119,6 +120,7 @@ interface WeatherInfo {
 
 export const MapPage = () => {
   const { t } = useLanguage();
+  const { showToast } = useToast();
   const [mode, setMode] = useState<"india" | "global">("india");
 
   // India Mode State
@@ -153,7 +155,7 @@ export const MapPage = () => {
         // Fallback if not found
         setMapCenter([20.5937, 78.9629]);
         setResults([]);
-        alert("Could not load regional simulation data. Please try another area.");
+        showToast("Could not load regional simulation data. Please try another area.", "error");
       }
       setIsSearching(false);
     }
@@ -169,7 +171,7 @@ export const MapPage = () => {
         setMapZoom(13);
         setResults(generateSimulatedBooths(coords.lat, coords.lng, false));
       } else {
-        alert("Location not found globally.");
+        showToast("Location not found globally.", "error");
       }
       setIsSearching(false);
     }

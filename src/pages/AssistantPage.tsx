@@ -7,6 +7,7 @@ import DOMPurify from "dompurify";
 import { generateChat } from "../services/geminiService";
 import { useAuth } from "../lib/AuthContext";
 import { useLanguage } from "../lib/LanguageContext";
+import { useToast } from "../lib/ToastContext";
 
 interface AssistantChatMessage {
   id: string;
@@ -26,6 +27,7 @@ const SUGGESTED_PROMPTS = [
 
 export const AssistantPage = () => {
   const { t, language, setLanguage } = useLanguage();
+  const { showToast } = useToast();
   const [messages, setMessages] = useState<AssistantChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -132,7 +134,7 @@ CRITICAL RULES:
   // Web Speech API for Native STT
   const toggleListening = () => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert("Voice input is not supported in your browser.");
+      showToast("Voice input is not supported in your browser.", "error");
       return;
     }
 

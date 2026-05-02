@@ -16,9 +16,11 @@ import { LEARN_TOPICS, LearnTopic } from "../data/LearnData";
 import { generateText } from "../services/geminiService";
 import { searchKnowledgeGraph, KnowledgeGraphEntity } from "../services/knowledgeGraphService";
 import { useLanguage } from "../lib/LanguageContext";
+import { useToast } from "../lib/ToastContext";
 
 export const LearnPage = () => {
   const { t } = useLanguage();
+  const { showToast } = useToast();
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [kgDataCache, setKgDataCache] = useState<Record<string, KnowledgeGraphEntity>>({});
   const [loadingKg, setLoadingKg] = useState(false);
@@ -93,7 +95,7 @@ export const LearnPage = () => {
       const utterance = new SpeechSynthesisUtterance(text);
       window.speechSynthesis.speak(utterance);
     } else {
-      alert("Text-to-speech is not supported in your browser.");
+      showToast("Text-to-speech is not supported in your browser.", "error");
     }
   };
 

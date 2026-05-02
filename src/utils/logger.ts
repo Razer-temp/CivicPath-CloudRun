@@ -21,8 +21,11 @@ const isDev = import.meta.env.DEV;
 
 /**
  * Structured logger with environment-aware output.
+ * Implements the Singleton pattern implicitly.
  * - `debug` and `info` are suppressed in production builds.
  * - `warn` and `error` are always emitted for observability.
+ * @pattern Singleton
+ * @complexity O(1) Time, O(1) Space
  */
 export const logger = {
   /**

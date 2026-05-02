@@ -11,6 +11,8 @@
 /**
  * Clamps a string to a maximum length, preventing oversized payloads.
  * Used on all user text inputs before sending to AI or Firestore.
+ * @pure
+ * @complexity O(1) Time, O(1) Space
  * @param str - The input string to clamp
  * @param maxLength - Maximum allowed character count
  * @returns The clamped string, truncated if necessary
@@ -24,6 +26,8 @@ export function clampLength(str: string, maxLength: number): string {
  * Sanitizes a plain-text string by escaping dangerous HTML characters.
  * Prevents XSS when the result is injected into the DOM outside of React's
  * built-in escaping (e.g., `dangerouslySetInnerHTML`, `aria-label`).
+ * @pure
+ * @complexity O(N) Time, O(N) Space
  * @param str - The untrusted string to sanitize
  * @returns HTML-escaped safe string, or empty string for non-string input
  */
@@ -60,6 +64,8 @@ export function isNonEmpty(value: unknown): boolean {
 /**
  * Strips potential NoSQL injection patterns from user input.
  * Removes MongoDB-style operators ($gt, $ne, etc.) and prototype pollution attempts.
+ * @pure
+ * @complexity O(N) Time, O(N) Space
  * @param input - The user input string to clean
  * @returns Cleaned string with injection patterns removed
  */

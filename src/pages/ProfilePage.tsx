@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import { useLanguage } from "../lib/LanguageContext";
+import { useToast } from "../lib/ToastContext";
 import { useNavigate } from "react-router-dom";
 import { COUNTRIES, PERSONAS } from "./JourneySetup";
 
@@ -56,6 +57,7 @@ const ALL_STEPS = [
 
 export const ProfilePage = () => {
   const { t } = useLanguage();
+  const { showToast } = useToast();
   const { user, profile, saveProfile } = useAuth();
   const navigate = useNavigate();
 
@@ -191,7 +193,7 @@ export const ProfilePage = () => {
                   url: window.location.href,
                 });
               } else {
-                alert(t("Sharing is not supported on this device."));
+                showToast(t("Sharing is not supported on this device."), "warning");
               }
             }}
             className="flex items-center gap-2 bg-civic-blue text-white px-5 py-2.5 rounded-full font-bold shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-colors"
